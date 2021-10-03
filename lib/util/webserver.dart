@@ -524,18 +524,29 @@ Future<bool> sendText(String data, ip) async {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
-        return true;
-      } else {
-        print(response.reasonPhrase);
-        return false;
-      }
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.reasonPhrase);
+      return false;
+    }
   } catch (e) {
     print(e);
     return false;
   }
 }
 
+String getUrl(String text) {
+  final urlRegExp = new RegExp(
+      r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
+  final urlMatches = urlRegExp.allMatches(text);
+  List<String> urls = urlMatches
+      .map((urlMatch) => text.substring(urlMatch.start, urlMatch.end))
+      .toList();
+  urls.forEach((x) => print(x));
+  print(urls[0]);
+  return ((urls[0] != null) ? urls[0] : "");
+}
 // // The location of the SignalR Server.
 // final serverUrl = "192.168.10.50:51001";
 // // Creates the connection by using the HubConnectionBuilder.

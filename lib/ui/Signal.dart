@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/src/provider.dart';
 import 'package:signalr_core/signalr_core.dart';
+import 'package:untitled1/provider/MyProvider.dart';
 import 'package:untitled1/provider/UploadProvider.dart';
 import 'package:untitled1/service/Service.dart';
 import 'package:untitled1/util/webserver.dart';
@@ -78,6 +79,11 @@ class _SignalState extends State<Signal> {
                   onLongPress: () {
                     _copy(message![1]);
                   },
+                  onTap: () {
+                    print("tap");
+                    if (getUrl(message![1]) != "")
+                      context.read<MyProvider>().launchURL(message[1]);
+                  },
                   onDoubleTap: () {
                     setState(() {
                       messageWidgets.removeAt(length);
@@ -91,8 +97,16 @@ class _SignalState extends State<Signal> {
                     ),
                     child: Stack(
                       children: <Widget>[
-                        Text("${message![1]}",
-                            style: TextStyle(color: Colors.black87))
+                        if (getUrl(message![1]) != "")
+                          Text(
+                            "${message[1]}",
+                            style: new TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline),
+                          )
+                        else
+                          Text("${message[1]}",
+                              style: TextStyle(color: Colors.black87))
                       ],
                     ),
                   )),
@@ -119,9 +133,14 @@ class _SignalState extends State<Signal> {
             children: [
               Expanded(
                 flex: 1,
-                child: GestureDetector(
+                child: InkWell(
                     onLongPress: () {
+                      print("tap");
                       _copy(message![1]);
+                    },
+                    onTap: () {
+                      if (getUrl(message![1]) != "")
+                        context.read<MyProvider>().launchURL(message[1]);
                     },
                     onDoubleTap: () {
                       setState(() {
@@ -136,8 +155,16 @@ class _SignalState extends State<Signal> {
                       ),
                       child: Stack(
                         children: <Widget>[
-                          Text("${message![1]}",
-                              style: TextStyle(color: Colors.black87))
+                          if (getUrl(message![1]) != "")
+                            Text(
+                              "${message[1]}",
+                              style: new TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline),
+                            )
+                          else
+                            Text("${message[1]}",
+                                style: TextStyle(color: Colors.black87))
                         ],
                       ),
                     )),
@@ -333,7 +360,14 @@ var my="";
                                             flex: 1,
                                             child: GestureDetector(
                                                 onLongPress: () {
+                                                  print("tap");
                                                   _copy(text);
+                                                },
+                                                onTap: () {
+                                                  if (getUrl(text) != "")
+                                                    context
+                                                        .read<MyProvider>()
+                                                        .launchURL(text);
                                                 },
                                                 onDoubleTap: () {
                                                   setState(() {
@@ -352,11 +386,25 @@ var my="";
                                                   ),
                                                   child: Stack(
                                                     children: <Widget>[
-                                                      Text(
+                                                      if (getUrl(
+                                                              _messageController
+                                                                  .text) !=
+                                                          "")
+                                                        Text(
                                                           "${_messageController.text}",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black87))
+                                                          style: new TextStyle(
+                                                              color:
+                                                                  Colors.blue,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline),
+                                                        )
+                                                      else
+                                                        Text(
+                                                            "${_messageController.text}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black87))
                                                     ],
                                                   ),
                                                 )),

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled1/component/FindDialog.dart';
 import 'package:untitled1/provider/MyProvider.dart';
+import 'package:untitled1/ui/Whatsappopen.dart';
 
 import '../main.dart';
 import 'TutsRegistration.dart';
@@ -349,10 +350,24 @@ class _IpWidgetState extends State<IpWidget> {
                 height: 63,
                 child: RaisedButton(
                     color: Colors.blue,
-                    child: Text("Tuts Registration",
+                    child: Text("Tuts Regis",
                         style: TextStyle(color: Colors.white)),
                     onPressed: () => Navigator.push(context,
                         MaterialPageRoute(builder: (context) => RegRoute()))),
+              ),
+            ),
+            SizedBox(width: 25),
+            Expanded(
+              child: Container(
+                height: 63,
+                child: RaisedButton(
+                    color: Colors.blue,
+                    child:
+                        Text("WhatsApp", style: TextStyle(color: Colors.white)),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WhatsAppopen()))),
               ),
             ),
           ],
