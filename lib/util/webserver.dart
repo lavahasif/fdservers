@@ -18,6 +18,7 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart' as r;
 import 'package:shelf_static/shelf_static.dart';
 import 'package:untitled1/repository/AppDatabase.dart';
+import 'package:untitled1/util/Constants.dart';
 
 import '../main.dart';
 import '../main.dart' as d;
@@ -53,6 +54,7 @@ class id implements Process {
 Future<void> Initial() async {
   initializeDatabase();
   prefs = await SharedPreferences.getInstance();
+  mfav_port = prefs.getString(Constants.FAVPORT) ?? "8069";
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
@@ -61,9 +63,11 @@ Future<void> Initial() async {
   if (await Permission.storage.request().isGranted) {
     if (androidInfo.version.sdkInt > 29) {
       if (await Permission.manageExternalStorage.status.isGranted) {
-        database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+        database = await $FloorAppDatabase
+            .databaseBuilder('app_database.db')
+            .addMigrations([migration1to2]).build();
         notesdao = database?.notesdao;
+        tutsdao = database?.tutsdao;
         // notesdao?.insertNotes(Notes(null, "asif", "DSf", "ds", "d"));
         //
         // notesdao
@@ -76,8 +80,9 @@ Future<void> Initial() async {
       }
     } else {
       database =
-      await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+          await $FloorAppDatabase.databaseBuilder('app_database.db').addMigrations([migration1to2]).build();
       notesdao = database!.notesdao;
+      tutsdao = database?.tutsdao;
       // notesdao.insertNotes(Notes(null, "asif", "DSf", "ds", "d"));
       //
       // notesdao
@@ -484,39 +489,49 @@ Future<File> writeToFile(ByteData data, String file) async {
 
 Future<bool> sendFile(String paths, ip) async {
   var headers = {'accept': '*/*', 'Content-Type': 'multipart/form-data'};
-  var request =
-  http.MultipartRequest('POST', Uri.parse('http://$ip:8069/fileupload'));
+  var request = http.MultipartRequest(
+      'POST', Uri.parse('http://$ip:$mfav_port/fileupload'));
   request.files.add(await http.MultipartFile.fromPath('files', paths));
   request.headers.addAll(headers);
 
-  http.StreamedResponse response = await request.send();
+  try {
+    http.StreamedResponse response = await request.send();
 
-  if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
-    return true;
-  } else {
-    print(response.reasonPhrase);
+    if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+        return true;
+      } else {
+        print(response.reasonPhrase);
+        return false;
+      }
+  } catch (e) {
+    print(e);
     return false;
   }
 }
 
 Future<bool> sendText(String data, ip) async {
   var headers = {'accept': '*/*', 'Content-Type': 'application/json'};
-  var request =
-  http.Request('POST', Uri.parse('http://$ip:8069/api/ApiUpload/text'));
+  var request = http.Request(
+      'POST', Uri.parse('http://$ip:$mfav_port/api/ApiUpload/text'));
   var encode = json.encode(data);
   request.body = encode;
   print(encode);
 
   request.headers.addAll(headers);
 
-  http.StreamedResponse response = await request.send();
+  try {
+    http.StreamedResponse response = await request.send();
 
-  if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
-    return true;
-  } else {
-    print(response.reasonPhrase);
+    if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+        return true;
+      } else {
+        print(response.reasonPhrase);
+        return false;
+      }
+  } catch (e) {
+    print(e);
     return false;
   }
 }

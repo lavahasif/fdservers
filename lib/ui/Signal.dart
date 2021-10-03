@@ -27,7 +27,7 @@ var _scrollController = ScrollController();
 var _showfiles = [];
 HubConnection? connection = HubConnectionBuilder()
     .withUrl(
-        'http://192.168.52.156:8069/chat',
+        'http://192.168.52.156:$mfav_port/chat',
         HttpConnectionOptions(
           logging: (level, message) => print(message),
         ))
@@ -51,7 +51,7 @@ class _SignalState extends State<Signal> {
   void initHub() {
     connection = HubConnectionBuilder()
         .withUrl(
-            'http://${ip2}:8069/chat',
+            'http://${ip2}:$mfav_port/chat',
             HttpConnectionOptions(
               logging: (level, message) => print(message),
             ))
@@ -397,7 +397,7 @@ var my="";
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, 8069,
+        var socket = await Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 500));
         socket.close();
         context.read<UploadProvider>().ip = ip;
@@ -478,7 +478,7 @@ var my="";
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, 8069,
+        var socket = await Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 500));
         socket.close();
         context.read<UploadProvider>().ip = ip;

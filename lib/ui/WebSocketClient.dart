@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -128,93 +129,93 @@ class _WebSocketClientState extends State<WebSocketClient> {
                     right: 0,
                     child: SingleChildScrollView(
                         child: Row(
-                      children: [
-                        Expanded(
-                            flex: 7,
-                            child: TextFormField(
-                              controller: _messageController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Message',
-                              ),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.lightBlue,
-                                radius: 27,
-                                child: IconButton(
-                                  icon: Icon(Icons.send),
-                                  onPressed: () async {
-                                    var length = messageWidgets.length;
-                                    var text = _messageController.text;
-                                    my = text;
-                                    Widget padding2 = Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
+                          children: [
+                            Expanded(
+                                flex: 7,
+                                child: TextFormField(
+                                  controller: _messageController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Message',
+                                  ),
+                                )),
+                            Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.lightBlue,
+                                    radius: 27,
+                                    child: IconButton(
+                                      icon: Icon(Icons.send),
+                                      onPressed: () async {
+                                        var length = messageWidgets.length;
+                                        var text = _messageController.text;
+                                        my = text;
+                                        Widget padding2 = Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
                                             MainAxisAlignment.end,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: GestureDetector(
-                                                onLongPress: () {
-                                                  _copy(text);
-                                                },
-                                                onDoubleTap: () {
-                                                  setState(() {
-                                                    messageWidgets
-                                                        .removeAt(length);
-                                                  });
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: GestureDetector(
+                                                    onLongPress: () {
+                                                      _copy(text);
+                                                    },
+                                                    onDoubleTap: () {
+                                                      setState(() {
+                                                        messageWidgets
+                                                            .removeAt(length);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
                                                         BorderRadius.circular(
                                                             10),
-                                                    color: Colors
-                                                        .deepPurple.shade100,
-                                                  ),
-                                                  child: Stack(
-                                                    children: <Widget>[
-                                                      Text(
-                                                          "${_messageController.text}",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black87))
-                                                    ],
-                                                  ),
-                                                )),
+                                                        color: Colors
+                                                            .deepPurple.shade100,
+                                                      ),
+                                                      child: Stack(
+                                                        children: <Widget>[
+                                                          Text(
+                                                              "${_messageController.text}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black87))
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                    if (_messageController.text.length > 0) {
-                                      setState(() {
-                                        messageWidgets.add(padding2);
+                                        );
+                                        if (_messageController.text.length > 0) {
+                                          setState(() {
+                                            messageWidgets.add(padding2);
 
-                                        _scrollController.jumpTo(
-                                            _scrollController
-                                                .position.maxScrollExtent);
-                                      });
+                                            _scrollController.jumpTo(
+                                                _scrollController
+                                                    .position.maxScrollExtent);
+                                          });
 
-                                      sendMessage(
-                                          socket!, _messageController.text);
-                                      _messageController.text = "";
-                                    }
-                                  },
-                                ),
-                              ),
-                            )),
-                      ],
-                    ))),
+                                          sendMessage(
+                                              socket!, _messageController.text);
+                                          _messageController.text = "";
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ))),
               ],
             ),
           ),
@@ -230,7 +231,7 @@ class _WebSocketClientState extends State<WebSocketClient> {
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, 8069,
+        var socket = await Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 500));
         socket.close();
         context.read<UploadProvider>().ip = ip;
@@ -282,8 +283,9 @@ class _WebSocketClientState extends State<WebSocketClient> {
     // listen for responses from the server
     socket?.listen(
       // handle data from the server
-      (Uint8List data) {
-        final serverResponse = String.fromCharCodes(data);
+          (Uint8List data) {
+        final serverResponse = utf8.decode(data);
+        // final serverResponse = String.fromCharCodes(data);
         print('Server: $serverResponse');
 
         var length = messageWidgets.length;

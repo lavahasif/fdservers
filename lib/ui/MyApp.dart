@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import 'IpWidget.dart';
 import 'NoteRegistration.dart';
+import 'Settings.dart';
 import 'share.dart';
 
 class MyApp extends StatelessWidget {
@@ -173,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 5,
                   child: Text("Delete After Upload"),
                 ),
                 Expanded(
@@ -188,6 +189,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     value: value2,
                   ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: IconButton(icon: Icon(Icons.settings),onPressed: (){
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => Settings()));
+                  },),
                 ),
               ],
             ),

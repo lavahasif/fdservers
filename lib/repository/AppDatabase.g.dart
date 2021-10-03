@@ -63,10 +63,12 @@ class _$AppDatabase extends AppDatabase {
 
   Notesdao? _notesdaoInstance;
 
+  Tutsdao? _tutsdaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 2,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -83,6 +85,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Notes` (`id` INTEGER, `name` TEXT, `note` TEXT, `link` TEXT, `date` TEXT, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Tuts` (`id` INTEGER, `name` TEXT, `note` TEXT, `link` TEXT, `date` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -93,6 +97,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   Notesdao get notesdao {
     return _notesdaoInstance ??= _$Notesdao(database, changeListener);
+  }
+
+  @override
+  Tutsdao get tutsdao {
+    return _tutsdaoInstance ??= _$Tutsdao(database, changeListener);
   }
 }
 
@@ -159,9 +168,14 @@ class _$Notesdao extends Notesdao {
         arguments: [id]);
   }
 
+  // @override
+  // Future<int?> getMaxCount() async {
+  //   await _queryAdapter.queryNoReturn('SELECT MAX(id) FROM Notes');
+  // }
   @override
   Future<int?> getMaxCount() async {
-    var list = await database.rawQuery("SELECT coalesce(max(id),0) as id FROM Notes");
+    var list =
+        await database.rawQuery("SELECT coalesce(max(id),0) as id FROM Notes");
     return int.parse(list.first["id"].toString()) + 1;
   }
 
@@ -223,5 +237,140 @@ class _$Notesdao extends Notesdao {
   @override
   Future<void> deleteNotess(List<Notes> Notess) async {
     await _notesDeletionAdapter.deleteList(Notess);
+  }
+}
+
+class _$Tutsdao extends Tutsdao {
+  _$Tutsdao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database, changeListener),
+        _tutsInsertionAdapter = InsertionAdapter(
+            database,
+            'Tuts',
+            (Tuts item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'note': item.note,
+                  'link': item.link,
+                  'date': item.date
+                },
+            changeListener),
+        _tutsUpdateAdapter = UpdateAdapter(
+            database,
+            'Tuts',
+            ['id'],
+            (Tuts item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'note': item.note,
+                  'link': item.link,
+                  'date': item.date
+                },
+            changeListener),
+        _tutsDeletionAdapter = DeletionAdapter(
+            database,
+            'Tuts',
+            ['id'],
+            (Tuts item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'note': item.note,
+                  'link': item.link,
+                  'date': item.date
+                },
+            changeListener);
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Tuts> _tutsInsertionAdapter;
+
+  final UpdateAdapter<Tuts> _tutsUpdateAdapter;
+
+  final DeletionAdapter<Tuts> _tutsDeletionAdapter;
+
+  @override
+  Future<Tuts?> findTutsById(int id) async {
+    return _queryAdapter.query('SELECT * FROM Tuts WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => Tuts(
+            row['id'] as int?,
+            row['name'] as String?,
+            row['note'] as String?,
+            row['link'] as String?,
+            row['date'] as String?),
+        arguments: [id]);
+  }
+
+  // @override
+  // Future<int?> getMaxCount() async {
+  //   await _queryAdapter.queryNoReturn('SELECT MAX(id) FROM Tuts');
+  // }
+  @override
+  Future<int?> getMaxCount() async {
+    var list =
+        await database.rawQuery("SELECT coalesce(max(id),0) as id FROM tuts");
+    return int.parse(list.first["id"].toString()) + 1;
+  }
+
+  @override
+  Future<List<Tuts>> findAllTutss() async {
+    return _queryAdapter.queryList('SELECT * FROM Tuts',
+        mapper: (Map<String, Object?> row) => Tuts(
+            row['id'] as int?,
+            row['name'] as String?,
+            row['note'] as String?,
+            row['link'] as String?,
+            row['date'] as String?));
+  }
+
+  @override
+  Stream<List<Tuts>> findAllTutssAsStream() {
+    return _queryAdapter.queryListStream('SELECT * FROM Tuts',
+        mapper: (Map<String, Object?> row) => Tuts(
+            row['id'] as int?,
+            row['name'] as String?,
+            row['note'] as String?,
+            row['link'] as String?,
+            row['date'] as String?),
+        queryableName: 'Tuts',
+        isView: false);
+  }
+
+  @override
+  Future<void> deletebyId(int id) async {
+    await _queryAdapter
+        .queryNoReturn('delete from  Tuts where id = ?1', arguments: [id]);
+  }
+
+  @override
+  Future<void> insertTuts(Tuts Tuts) async {
+    await _tutsInsertionAdapter.insert(Tuts, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> insertTutss(List<Tuts> Tutss) async {
+    await _tutsInsertionAdapter.insertList(Tutss, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateTuts(Tuts Tuts) async {
+    await _tutsUpdateAdapter.update(Tuts, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateTutss(List<Tuts> Tuts) async {
+    await _tutsUpdateAdapter.updateList(Tuts, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteTuts(Tuts Tuts) async {
+    await _tutsDeletionAdapter.delete(Tuts);
+  }
+
+  @override
+  Future<void> deleteTutss(List<Tuts> Tutss) async {
+    await _tutsDeletionAdapter.deleteList(Tutss);
   }
 }

@@ -9,9 +9,11 @@ import 'package:untitled1/provider/CrudProvider.dart';
 import 'package:untitled1/provider/MedaProvider.dart';
 import 'package:untitled1/provider/MyProvider.dart';
 import 'package:untitled1/provider/RegProvider.dart';
+import 'package:untitled1/provider/TutsProvider.dart' as ap;
 import 'package:untitled1/provider/UploadProvider.dart';
 import 'package:untitled1/repository/AppDatabase.dart';
 import 'package:untitled1/repository/Notes_dao.dart';
+import 'package:untitled1/repository/Tuts_dao.dart';
 import 'package:untitled1/service/Service.dart';
 import 'package:untitled1/ui/MyApp.dart';
 
@@ -21,11 +23,13 @@ TextEditingController? textcontroller = TextEditingController();
 var address = "";
 
 var url_ = '';
+var mfav_port = '8069';
 
 late HttpServer server;
 late r.Router app;
 AppDatabase? database = null;
 Notesdao? notesdao = null;
+Tutsdao? tutsdao = null;
 late SharedPreferences prefs;
 
 void main() async {
@@ -50,6 +54,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => MyProvider()),
         ChangeNotifierProvider(
             create: (_) => RegProvider(database!, notesdao!)),
+        ChangeNotifierProvider(
+            create: (_) => ap.RegProvider(database!, tutsdao!)),
         ChangeNotifierProvider(create: (_) => MediaProvider()),
         ChangeNotifierProvider(create: (_) => CrudProvider()),
         ChangeNotifierProvider(create: (_) => UploadProvider()),

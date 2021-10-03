@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class UploadProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  var _isConnected;
+  var _isConnected="";
 
   get isConnected => _isConnected;
 

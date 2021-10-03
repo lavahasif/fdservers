@@ -23,6 +23,12 @@ class _UploadState extends State<Upload> {
   ShareService services = ShareService();
   var ip2 = "";
   var isde = false;
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SetSocket();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +39,17 @@ class _UploadState extends State<Upload> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Share"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text("${context.watch<UploadProvider>().ip}"),
+                Text("${context.watch<UploadProvider>().isConnected}"),
+              ],
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,7 +168,7 @@ class _UploadState extends State<Upload> {
           GestureDetector(child: Text("Devices")),
           Column(
             children: [
-              Text("8069"),
+              Text("$mfav_port"),
             ],
           ),
         ],
@@ -164,37 +181,59 @@ class _UploadState extends State<Upload> {
       var ischecked = false;
       var is8081 = false;
       var is1433 = false;
-      try {
-        var socket = await Socket.connect(ip, 8069,
-            timeout: Duration(milliseconds: 500));
-        socket.close();
-        context.read<UploadProvider>().ip = ip;
-        ip2 = ip;
-        ischecked = true;
-      } catch (e) {
-        // print(e);
-      }
+      if (ip != "127.0.0.1" || ip != "localhost") {
+        try {
+          var socket = await Socket.connect(ip, int.parse(mfav_port),
+              timeout: Duration(milliseconds: 500));
+          socket.close();
+          context.read<UploadProvider>().ip = ip;
+          ip2 = ip;
+          ischecked = true;
+        } catch (e) {
+          print(e);
+        }
 
-      setState(() {
-        count++;
-        _ondeviceconnected2.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text("$count"),
-            GestureDetector(
-                onTap: () {
-                  // context.read<MyProvider>().launchURL('http://$ip:8069');
-                },
-                child: Text("$ip")),
-            Column(
+        setState(() {
+          count++;
+          _ondeviceconnected2.add(GestureDetector(
+            onTap: () {
+              context.read<UploadProvider>().ip = ip;
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Text("8069"),
-                Checkbox(value: ischecked, onChanged: (_) {}),
+                Text("$count"),
+                Text("$ip"),
+                Column(
+                  children: [
+                    // Text("$mfav_port"),
+                    Checkbox(value: ischecked, onChanged: (_) {}),
+                  ],
+                ),
               ],
             ),
-          ],
-        ));
-      });
+          ));
+        });
+      }
+    });
+  }
+
+  SetSocket() async {
+    var da = new AndroidIp().onDeviceConnected!.listen((event) async {
+      var ip = event;
+
+      if (ip != "127.0.0.1" || ip != "localhost") {
+        try {
+          var socket = await Socket.connect(ip, int.parse(mfav_port),
+              timeout: Duration(milliseconds: 500));
+          socket.close();
+          context.read<UploadProvider>().ip = ip;
+          context.read<UploadProvider>().isConnected = "Connected";
+          ip2 = ip;
+        } catch (e) {
+          // print(e);
+        }
+      }
     });
   }
 

@@ -22,7 +22,7 @@ class WebSockets extends StatefulWidget {
 var key = GlobalKey<ScaffoldState>();
 var messageWidgets = [];
 var _ipController = TextEditingController();
-var _portController = TextEditingController(text: "121");
+var _portController = TextEditingController(text: "4567");
 var _scrollController = ScrollController();
 var _showfiles = [];
 
@@ -37,7 +37,7 @@ class _WebSocketsState extends State<WebSockets> {
     initTopre();
     initHub();
 
-    if (proces_txt.length > 0) _ipController.text = proces_txt;
+    // if (proces_txt.length > 0) _ipController.text = proces_txt;
   }
 
   var retry = 0;
@@ -216,7 +216,7 @@ class _WebSocketsState extends State<WebSockets> {
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, 8069,
+        var socket = await Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 500));
         socket.close();
         context.read<UploadProvider>().ip = ip;

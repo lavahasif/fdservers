@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -234,7 +235,7 @@ class _WebSocketServerState extends State<WebSocketServer> {
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, 8069,
+        var socket = await Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 500));
         socket.close();
         context.read<UploadProvider>().ip = ip;
@@ -283,7 +284,8 @@ class _WebSocketServerState extends State<WebSocketServer> {
       // handle data from the client
       (Uint8List data) async {
         await Future.delayed(Duration(seconds: 1));
-        final message = String.fromCharCodes(data);
+        final message = utf8.decode(data);
+        // final message = String.fromCharCodes(data);
         int length = messageWidgets.length;
         Widget padding2 = Padding(
           padding: const EdgeInsets.all(8.0),

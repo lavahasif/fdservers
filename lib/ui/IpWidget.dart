@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:untitled1/component/FindDialog.dart';
 import 'package:untitled1/provider/MyProvider.dart';
 
+import '../main.dart';
+import 'TutsRegistration.dart';
+
 Isolate? geek;
 
 void main() {
@@ -338,6 +341,22 @@ class _IpWidgetState extends State<IpWidget> {
             )
           ],
         ),
+        SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 63,
+                child: RaisedButton(
+                    color: Colors.blue,
+                    child: Text("Tuts Registration",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RegRoute()))),
+              ),
+            ),
+          ],
+        ),
         SizedBox(height: 25),
         Row(
           children: [
@@ -410,7 +429,7 @@ class _IpWidgetState extends State<IpWidget> {
           GestureDetector(child: Text("Devices")),
           Column(
             children: [
-              Text("8069"),
+              Text("$mfav_port"),
             ],
           ),
           Column(
@@ -434,7 +453,7 @@ class _IpWidgetState extends State<IpWidget> {
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await soc.Socket.connect(ip, 8069,
+        var socket = await soc.Socket.connect(ip, int.parse(mfav_port),
             timeout: Duration(milliseconds: 250));
         socket.close();
         ischecked = true;
@@ -469,12 +488,12 @@ class _IpWidgetState extends State<IpWidget> {
                   _copy(ip);
                 },
                 onTap: () {
-                  context.read<MyProvider>().launchURL('http://$ip:8069');
+                  context.read<MyProvider>().launchURL('http://$ip:$mfav_port');
                 },
                 child: Text("$ip")),
             Column(
               children: [
-                // Text("8069"),
+                // Text("$mfav_port"),
                 Checkbox(value: ischecked, onChanged: (_) {}),
               ],
             ),
@@ -549,7 +568,7 @@ class _IpWidgetState extends State<IpWidget> {
                 child: Text("$ip")),
             Column(
               children: [
-                // Text("8069"),
+                // Text("$mfav_port"),
                 Checkbox(value: ischecked, onChanged: (_) {}),
               ],
             ),
@@ -604,7 +623,7 @@ class _IpWidgetState extends State<IpWidget> {
               child: Text("$ip")),
           Column(
             children: [
-              // Text("8069"),
+              // Text("$mfav_port"),
               Checkbox(value: ischecked, onChanged: (_) {}),
             ],
           ),
