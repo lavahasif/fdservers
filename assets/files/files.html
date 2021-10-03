@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Files</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/files">File</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload">Upload</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<style>
+    .name {
+
+        height: 100px;
+
+    }
+    .h22{
+        margin-top: 10px;
+    }
+
+</style>
+<div class="container ">
+
+
+    <div class="box text-center h-100 bg bg-dark text-light">
+        <div class="name">
+
+            <p class="h22">
+            <h1>My Files</h1>
+            </p>
+        </div>
+    </div>
+
+
+</div>
+<div class="row">
+    <!--        content-->
+
+
+</div>
+</body>
+<script type="text/javascript">
+    function myFunction(value) {
+<!--window.prompt("Copy to clipboard: Ctrl+C, Enter", value);-->
+ copyToClp(value)
+   /* Copy the text inside the text field */
+<!--  navigator.clipboard.writeText(value);-->
+
+
+}
+function copyToClp(txt){
+    var m = document;
+    txt = m.createTextNode(txt);
+    var w = window;
+    var b = m.body;
+    b.appendChild(txt);
+    if (b.createTextRange) {
+        var d = b.createTextRange();
+        d.moveToElementText(txt);
+        d.select();
+        m.execCommand('copy');
+    }
+    else {
+        var d = m.createRange();
+        var g = w.getSelection;
+        d.selectNodeContents(txt);
+        g().removeAllRanges();
+        g().addRange(d);
+        m.execCommand('copy');
+        g().removeAllRanges();
+    }
+    txt.remove();
+}
+
+</script>
+</html>
+
