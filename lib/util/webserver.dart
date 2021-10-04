@@ -544,8 +544,15 @@ String getUrl(String text) {
       .map((urlMatch) => text.substring(urlMatch.start, urlMatch.end))
       .toList();
   urls.forEach((x) => print(x));
-  print(urls[0]);
-  return ((urls[0] != null) ? urls[0] : "");
+  var url = "";
+  try {
+    url = urls[0];
+    ;
+    print(url);
+  } catch (e) {
+    url = "";
+  }
+  return ((url != null) ? url : "");
 }
 // // The location of the SignalR Server.
 // final serverUrl = "192.168.10.50:51001";
