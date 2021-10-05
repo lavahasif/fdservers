@@ -30,7 +30,7 @@ extension DatabaseFactoryExtensions on sqflite.DatabaseFactory {
     var s = await ExtStorage.getExternalStorageDirectory();
 
     var databasesPath = join(s!, "ssnotes");
-    if (Directory(databasesPath).existsSync()) {
+    if (!Directory(databasesPath).existsSync()) {
       Directory(databasesPath).create();
     }
     // final databasesPath = await this.getDatabasesPath();

@@ -8,10 +8,11 @@
     </uses-permission>
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:label="fdServer"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:requestLegacyExternalStorage="true"
+
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
