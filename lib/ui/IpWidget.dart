@@ -115,8 +115,11 @@ class _IpWidgetState extends State<IpWidget> {
       root = await AndroidIp.IpAddress_Wifi_tetherorwifi ?? 'Unknown Number';
       IpAddress_Wifi = await AndroidIp.IpAddress_Wifi ?? 'Unknown Number';
       IpAddress_Private = await AndroidIp.IpAddress_Private ?? 'Unknown Number';
-      IpAddress_USB_tether =
-          await AndroidIp.IpAddress_USB_tether ?? 'Unknown Number';
+      var networkResult = (await AndroidIp.networkresult);
+      IpAddress_USB_tether = networkResult!.Usb
+          // await AndroidIp.IpAddress_USB_tether
+          ??
+          'Unknown Number';
       IpAddress_Cellular1 =
           await AndroidIp.IpAddress_Cellular1 ?? 'Unknown Number';
       IpAddress_Cellular2 =
