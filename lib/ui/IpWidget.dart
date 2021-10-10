@@ -73,13 +73,16 @@ class _IpWidgetState extends State<IpWidget> {
       );
     }).toList();
   }
-  var listner = new AndroidIp().onConnectivityChanged;
+
+  var listner = androidip.onConnectivityChanged;
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    listner=null;
+    listner = null;
   }
+
   @override
   void initState() {
     super.initState();
@@ -314,7 +317,7 @@ class _IpWidgetState extends State<IpWidget> {
                 )
               ],
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
@@ -337,6 +340,24 @@ class _IpWidgetState extends State<IpWidget> {
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
                         ShowAlertDialog_ping(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 63,
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      child: Text("IP Scan",
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        ShowAlertDialog_ping_ip(context);
                       },
                     ),
                   ),
@@ -430,6 +451,51 @@ class _IpWidgetState extends State<IpWidget> {
               var port = value[2].toString();
 
               setLisIp_ip_port(int.parse(port), ip);
+              print("=+==>$ip");
+            },
+            type: 2,
+          );
+        });
+  }
+
+  var myips = "";
+
+  ShowAlertDialog_ping_ip(BuildContext context) {
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return FindDialog(
+            title: "Ping",
+            okCallback: (value) {
+
+              var ip = value[1].toString();
+              var port = value[2].toString();
+              var arguments = {
+                'ip': '$ip',
+              };
+              myips = ip;
+              setState(() {
+                counts=0;
+                _ondeviceconnected2.clear();
+                _ondeviceconnected2.add(Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("SlNo"),
+                    GestureDetector(child: Text("Devices")),
+                    Column(
+                      children: [
+                        Text("$port"),
+                      ],
+                    ),
+                  ],
+                ));
+              });
+              androidip.onIpConnected(arguments)!.listen((event) {
+                print(event);
+                setLisIp_ip_port2(int.parse(port), event);
+              });
+
               print("=+==>$ip");
             },
             type: 2,
@@ -646,6 +712,49 @@ class _IpWidgetState extends State<IpWidget> {
             ],
           ),
         ],
+      ));
+    });
+  }
+
+  var counts = 0;
+
+  setLisIp_ip_port2(int port, String ip) async {
+    var ischecked = false;
+    try {
+      var socket = await soc.Socket.connect(ip, port,
+          timeout: Duration(milliseconds: 1500));
+      socket.close();
+      ischecked = true;
+    } catch (e) {
+      print(e);
+      ischecked = false;
+      // print(e);
+    }
+
+    setState(() {
+      counts++;
+      _ondeviceconnected2.add(Container(
+        color: myips == ip ? Colors.lightBlue : Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text("$counts"),
+            GestureDetector(
+                onDoubleTap: () {
+                  _copy(ip);
+                },
+                onTap: () {
+                  context.read<MyProvider>().launchURL('http://$ip:$port');
+                },
+                child: Text("$ip")),
+            Column(
+              children: [
+                // Text("$mfav_port"),
+                Checkbox(value: ischecked, onChanged: (_) {}),
+              ],
+            ),
+          ],
+        ),
       ));
     });
   }

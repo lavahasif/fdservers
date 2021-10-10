@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:android_util/android_ip.dart';
+import 'package:android_util/android_ip.dart' as a;
 import 'package:flutter/material.dart';
 import 'package:flutter_process_text/flutter_process_text.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +26,7 @@ var address = "";
 
 var url_ = '';
 var mfav_port = '8069';
-
+late a.AndroidIp androidip;
 late HttpServer server;
 late r.Router app;
 AppDatabase? database = null;
@@ -48,7 +50,7 @@ void main() async {
   FlutterProcessText.getProcessTextStream.listen((event) {
     print("================>$event");
   });
-
+  androidip=new a.AndroidIp();
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => MyProvider()),
