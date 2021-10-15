@@ -38,7 +38,7 @@ class _UploadState extends State<Upload> {
     // if (ip2.toString().isNotEmpty) Uploadf(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Share"),
+        title: Text("Upload"),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -219,13 +219,14 @@ class _UploadState extends State<Upload> {
   }
 
   SetSocket() async {
+    var ip = "";
     var da = new AndroidIp().onDeviceConnected!.listen((event) async {
-      var ip = event;
+      ip = event;
 
       if (ip != "127.0.0.1" || ip != "localhost") {
         try {
           var socket = await Socket.connect(ip, int.parse(mfav_port),
-              timeout: Duration(milliseconds: 500));
+              timeout: Duration(milliseconds: int.parse(mfav_timeout)));
           socket.close();
           context.read<UploadProvider>().ip = ip;
           context.read<UploadProvider>().isConnected = "Connected";
@@ -235,6 +236,19 @@ class _UploadState extends State<Upload> {
         }
       }
     });
+
+    if (ip.isEmpty) {
+      try {
+        var socket = await Socket.connect(mfav_ip, int.parse(mfav_port),
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
+        socket.close();
+        context.read<UploadProvider>().ip = mfav_ip;
+        context.read<UploadProvider>().isConnected = "Connected";
+        ip2 = mfav_ip;
+      } catch (e) {
+        // print(e);
+      }
+    }
   }
 
   Future<void> ShowFiles() async {

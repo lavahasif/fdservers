@@ -48,6 +48,16 @@ class ShareService {
         .invokeMethod("delete");
   }
 
+  Future<void> openWhats(mob, message,type) async {
+    return await MethodChannel('com.tnorbury.flutterSharingTutorial')
+        .invokeMethod("whats", {'message': "$message", 'mob': "$mob",'pacakges':'$type'});
+  }
+
+  Future<int> getAndroidVersion() async {
+    return await MethodChannel('com.tnorbury.flutterSharingTutorial')
+        .invokeMethod("version");
+  }
+
   Future<String> getPath() async {
     return await MethodChannel('com.tnorbury.flutterSharingTutorial')
             .invokeMethod("getPath") ??

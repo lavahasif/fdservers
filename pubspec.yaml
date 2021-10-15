@@ -42,7 +42,7 @@ dependencies:
   provider: ^6.0.0
   #    android_ip: 0.0.1
   wifi_iot: ^0.3.6
-  android_util: ^0.0.5
+  android_util: ^0.0.6
   ext_storage:
     git:
       url: git://github.com/lavahasif/ext_storage_ups.git

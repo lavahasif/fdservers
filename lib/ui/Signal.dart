@@ -28,7 +28,7 @@ var _scrollController = ScrollController();
 var _showfiles = [];
 HubConnection? connection = HubConnectionBuilder()
     .withUrl(
-        'http://192.168.52.156:$mfav_port/chat',
+        'http://$mfav_ip:$mfav_port/chat',
         HttpConnectionOptions(
           logging: (level, message) => print(message),
         ))
@@ -62,8 +62,9 @@ class _SignalState extends State<Signal> {
     }).onError((error, stackTrace) {
       context.read<UploadProvider>().isConnected = "Failed";
       retry++;
-      if (retry < 5) SetSocket(context);
-
+      if (retry < 5)
+        SetSocket(context);
+      else if (retry == 6) SetSocket6(context);
     });
     connection?.on('newMessage', (message) {
       print(message.toString());
@@ -446,7 +447,7 @@ var my="";
       var is1433 = false;
       try {
         var socket = await Socket.connect(ip, int.parse(mfav_port),
-            timeout: Duration(milliseconds: 500));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         context.read<UploadProvider>().ip = ip;
         ip2 = ip;
@@ -522,21 +523,33 @@ var my="";
   SetSocket(BuildContext context) async {
     var da = new AndroidIp().onDeviceConnected!.listen((event) async {
       var ip = event;
-      var ischecked = false;
-      var is8081 = false;
-      var is1433 = false;
+
       try {
         var socket = await Socket.connect(ip, int.parse(mfav_port),
-            timeout: Duration(milliseconds: 500));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         context.read<UploadProvider>().ip = ip;
         ip2 = ip;
         initHub();
-        ischecked = true;
       } catch (e) {
         // print(e);
       }
     });
+  }
+
+  SetSocket6(BuildContext context) async {
+    var ip = mfav_ip;
+
+    try {
+      var socket = await Socket.connect(ip, int.parse(mfav_port),
+          timeout: Duration(milliseconds: int.parse(mfav_timeout)));
+      socket.close();
+      context.read<UploadProvider>().ip = ip;
+      ip2 = ip;
+      initHub();
+    } catch (e) {
+      // print(e);
+    }
   }
 
   void _copy(String clip) {

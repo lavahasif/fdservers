@@ -55,6 +55,9 @@ Future<void> Initial() async {
   initializeDatabase();
   prefs = await SharedPreferences.getInstance();
   mfav_port = prefs.getString(Constants.FAVPORT) ?? "8069";
+  mfav_ip = prefs.getString(Constants.FAVPORT_IP) ?? "192.168.43.84";
+  mfav_timeout = prefs.getString(Constants.FAVPORT_TIMEOUT) ?? "5000";
+  mfav2_timeout = prefs.getString(Constants.FAVPORT2_TIMEOUT) ?? "5000";
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:android_util/android_ip.dart';
 import 'package:android_util/android_ip.dart' as a;
 import 'package:flutter/material.dart';
 import 'package:flutter_process_text/flutter_process_text.dart';
@@ -18,6 +17,7 @@ import 'package:untitled1/repository/Notes_dao.dart';
 import 'package:untitled1/repository/Tuts_dao.dart';
 import 'package:untitled1/service/Service.dart';
 import 'package:untitled1/ui/MyApp.dart';
+import 'package:untitled1/util/Constants.dart';
 
 import 'util/webserver.dart';
 
@@ -26,6 +26,9 @@ var address = "";
 
 var url_ = '';
 var mfav_port = '8069';
+var mfav_ip = '192.168.43.84';
+var mfav_timeout = '5000';
+var mfav2_timeout = '5000';
 late a.AndroidIp androidip;
 late HttpServer server;
 late r.Router app;
@@ -72,6 +75,7 @@ void ShareStarter() {
   ShareService()
     // Register a callback so that we handle shared data if it arrives while the
     // app is running
+    ..getAndroidVersion().then((value) => Constants.Sdk = value)
     ..onDataReceived = _handleSharedData
     ..onFileReceived = _fileReceived
     // Check to see if there is any shared data already, meaning that the app

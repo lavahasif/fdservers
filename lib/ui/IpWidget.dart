@@ -471,12 +471,10 @@ class _IpWidgetState extends State<IpWidget> {
 
               var ip = value[1].toString();
               var port = value[2].toString();
-              var arguments = {
-                'ip': '$ip',
-              };
+              var arguments = {'ip': '$ip', 'timeout': '$mfav2_timeout'};
               myips = ip;
               setState(() {
-                counts=0;
+                counts = 0;
                 _ondeviceconnected2.clear();
                 _ondeviceconnected2.add(Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -538,7 +536,7 @@ class _IpWidgetState extends State<IpWidget> {
       var is1433 = false;
       try {
         var socket = await soc.Socket.connect(ip, int.parse(mfav_port),
-            timeout: Duration(milliseconds: 250));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         ischecked = true;
       } catch (e) {
@@ -546,7 +544,7 @@ class _IpWidgetState extends State<IpWidget> {
       }
       try {
         var socket = await soc.Socket.connect(ip, 8081,
-            timeout: Duration(milliseconds: 250));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         is8081 = true;
       } catch (e) {
@@ -554,7 +552,7 @@ class _IpWidgetState extends State<IpWidget> {
       }
       try {
         var socket = await soc.Socket.connect(ip, 1433,
-            timeout: Duration(milliseconds: 250));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         is1433 = true;
       } catch (e) {
@@ -629,7 +627,7 @@ class _IpWidgetState extends State<IpWidget> {
       var is1433 = false;
       try {
         var socket = await soc.Socket.connect(ip, port,
-            timeout: Duration(milliseconds: 250));
+            timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         ischecked = true;
       } catch (e) {
@@ -682,7 +680,7 @@ class _IpWidgetState extends State<IpWidget> {
     var ischecked = false;
     try {
       var socket = await soc.Socket.connect(ip, port,
-          timeout: Duration(milliseconds: 1500));
+          timeout: Duration(milliseconds: int.parse(mfav_timeout)));
       socket.close();
       ischecked = true;
     } catch (e) {
@@ -722,7 +720,7 @@ class _IpWidgetState extends State<IpWidget> {
     var ischecked = false;
     try {
       var socket = await soc.Socket.connect(ip, port,
-          timeout: Duration(milliseconds: 1500));
+          timeout: Duration(milliseconds: int.parse(mfav_timeout)));
       socket.close();
       ischecked = true;
     } catch (e) {
