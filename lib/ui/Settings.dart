@@ -8,6 +8,7 @@ var _portController = TextEditingController(text: "8069");
 var _ipController = TextEditingController(text: "192.168.43.84");
 var _timeoutController = TextEditingController(text: "5000");
 var _timeout2Controller = TextEditingController(text: "5000");
+GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
 class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);
@@ -15,7 +16,15 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _portController.text = prefs.getString(Constants.FAVPORT) ?? "8069";
+
+    _ipController.text =
+        prefs.getString(Constants.FAVPORT_IP) ?? "192.168.43.84";
+    _timeoutController.text =
+        prefs.getString(Constants.FAVPORT_TIMEOUT) ?? "5000";
+    _timeout2Controller.text =
+        prefs.getString(Constants.FAVPORT2_TIMEOUT) ?? "5000";
     return Scaffold(
+      key: key,
       appBar: AppBar(
         title: Text("Setting"),
       ),
@@ -76,7 +85,7 @@ class Settings extends StatelessWidget {
                         child:
                         Text("Save", style: TextStyle(color: Colors.white)),
                         onPressed: () {
-                          saveTopre();
+                          saveTopre(context);
                         }),
                   ),
                 ),
@@ -88,7 +97,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  void saveTopre() {
+  void saveTopre(BuildContext context) {
     var port = _portController.text;
     var ip = _ipController.text;
     var timeout = _timeoutController.text;
@@ -105,6 +114,7 @@ class Settings extends StatelessWidget {
       mfav_ip = ip;
       mfav_timeout = timeout;
       mfav2_timeout = timeout2;
+      key.currentState!.showSnackBar(SnackBar(content: Text("Saved")));
     }
   }
 }
