@@ -54,6 +54,8 @@ dependencies:
   google_fonts: ^2.1.0
   lottie: ^1.2.0
   shareapks: ^0.0.2
+  file_picker: ^4.1.5
+  font_awesome_flutter: ^9.2.0
 
 
 

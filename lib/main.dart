@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:android_util/android_ip.dart' as a;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_process_text/flutter_process_text.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ import 'package:untitled1/provider/MyProvider.dart';
 import 'package:untitled1/provider/RegProvider.dart';
 import 'package:untitled1/provider/TutsProvider.dart' as ap;
 import 'package:untitled1/provider/UploadProvider.dart';
+import 'package:untitled1/provider/WhatsAppprovider.dart';
 import 'package:untitled1/repository/AppDatabase.dart';
 import 'package:untitled1/repository/Notes_dao.dart';
 import 'package:untitled1/repository/Tuts_dao.dart';
@@ -63,12 +65,15 @@ void main() async {
             create: (_) => ap.RegProvider(database!, tutsdao!)),
         ChangeNotifierProvider(create: (_) => MediaProvider()),
         ChangeNotifierProvider(create: (_) => CrudProvider()),
+        ChangeNotifierProvider(create: (_) => WhatsAppprovider()),
         ChangeNotifierProvider(create: (_) => UploadProvider()),
       ],
       // child: MaterialApp(home: RegRoute())));
       child: MyApp()));
   // runApp(MyApp());
 }
+
+
 
 void ShareStarter() {
   // Create the share service

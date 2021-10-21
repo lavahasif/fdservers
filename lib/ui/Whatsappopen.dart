@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled1/component/ListNumber.dart';
 import 'package:untitled1/main.dart';
+import 'package:untitled1/provider/WhatsAppprovider.dart';
 import 'package:untitled1/service/Service.dart';
 import 'package:untitled1/util/Constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,93 +17,148 @@ class WhatsAppopen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _portController.text = proces_txt;
+    var scrollController = ScrollController();
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Container(
+            height: 48,
+            width: 48,
+            child: IconButton(
+              icon: Icon(
+                Icons.upgrade,
+                size: 30,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                scrollController.jumpTo(0);
+              },
+            ),
+          ),
+          Container(
+            height: 48,
+            width: 48,
+            child: IconButton(
+              icon: Icon(
+                Icons.vertical_align_bottom,
+                size: 30,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                scrollController.jumpTo(500);
+              },
+            ),
+          ),
+          Container(
+            height: 48,
+            width: 48,
+            child: IconButton(
+              icon: Icon(
+                Icons.clear,
+                size: 30,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                Provider.of<WhatsAppprovider>(context, listen: false)
+                    .numberlist = [];
+              },
+            ),
+          ),
+        ],
         title: Text("Open WhatsApp"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                    flex: 7,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _portController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'mob',
-                          prefixIcon: IconButton(
-                              icon: Icon(Icons.nine_k),
-                              onPressed: () => _portController.text =
-                                  "91" + _portController.text),
-                          suffixIcon: Wrap(
-                            children: [
-                              IconButton(
-                                  icon: Icon(Icons.paste),
-                                  onPressed: () => _copy()),
-                              IconButton(
-                                  icon: Icon(Icons.close),
-                                  onPressed: () => _portController.clear()),
-                            ],
-                          )),
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
-                        child: Text("Buisness",
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          open(context, "B");
-                        }),
+      body: SingleChildScrollView(
+        controller: scrollController,
+        physics: ScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      flex: 7,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: _portController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'mob',
+                            prefixIcon: IconButton(
+                                icon: Icon(Icons.nine_k),
+                                onPressed: () => _portController.text =
+                                    "91" + _portController.text),
+                            suffixIcon: Wrap(
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.paste),
+                                    onPressed: () => _copy()),
+                                IconButton(
+                                    icon: Icon(Icons.close),
+                                    onPressed: () => _portController.clear()),
+                              ],
+                            )),
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 63,
+                      child: RaisedButton(
+                          color: Colors.blue,
+                          child: Text("Buisness",
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            open(context, "B");
+                          }),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10),
-                    height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
-                        child: Text("Open Whatsapp",
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          open(context, "C");
-                        }),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      height: 63,
+                      child: RaisedButton(
+                          color: Colors.blue,
+                          child: Text("Open Whatsapp",
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            open(context, "C");
+                          }),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
-                        child: Text("Open All",
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          open(context, "A");
-                        }),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 63,
+                      child: RaisedButton(
+                          color: Colors.blue,
+                          child: Text("Open All",
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            open(context, "A");
+                          }),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              // Container(
+              //     height: 300.0,
+              //     child:
+              SingleChildScrollView(child: ListNumber())
+              // )
+            ],
+          ),
         ),
       ),
     );
