@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:android_util/android_ip.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:untitled1/main.dart';
 import 'package:untitled1/provider/UploadProvider.dart';
@@ -111,6 +113,35 @@ class _UploadState extends State<Upload> {
                     height: 63,
                     child: RaisedButton(
                         color: Colors.blue,
+                        child: Text("Show File Cache",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () => ShowFiles_fil()),
+                  ),
+                ),
+                SizedBox(width: 25),
+                Expanded(
+                  child: Container(
+                    height: 63,
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      child: Text("Show Files Root",
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        ShowFiles_ssnot();
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 25),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 63,
+                    child: RaisedButton(
+                        color: Colors.blue,
                         child: Text("Upload",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () {
@@ -147,6 +178,37 @@ class _UploadState extends State<Upload> {
                         onPressed: () {
                           if (proces_txt.toString().isNotEmpty &&
                               ip2.toString().isNotEmpty) Uploadtext(context);
+                        }),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 25),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 63,
+                    child: RaisedButton(
+                        color: Colors.blue,
+                        child:
+                            Text("Move", style: TextStyle(color: Colors.white)),
+                        onPressed: () async {
+                          final Directory? docDir =
+                              await getExternalStorageDirectory();
+                          var s =
+                              await ExtStorage.getExternalStorageDirectory();
+                          List<FileSystemEntity> files =
+                              docDir!.listSync(recursive: true);
+                          String data = "";
+                          files.forEach((element) {
+                            var filename = element
+                                .resolveSymbolicLinksSync()
+                                .toString()
+                                .split("/")
+                                .last;
+                            File(element.path).copy("$s/ssnotes/$filename");
+                          });
                         }),
                   ),
                 ),
@@ -270,6 +332,98 @@ class _UploadState extends State<Upload> {
 
     var path = await services.getPath();
     var files = Directory(path).listSync(recursive: true);
+    int i = 0;
+    files.forEach((f) {
+      i++;
+      setState(() {
+        _showfiles.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(flex: 1, child: Text("$i")),
+            Expanded(flex: 5, child: Text("${f.path.split("/").last}")),
+            Expanded(
+              flex: 2,
+              child: IconButton(
+                focusColor: Colors.deepPurpleAccent,
+                hoverColor: Colors.deepPurpleAccent,
+                icon: Icon(Icons.delete_forever),
+                onPressed: () {
+                  f.delete();
+                  ShowFiles();
+                },
+              ),
+            ),
+          ],
+        ));
+      });
+    });
+  }
+
+  Future<void> ShowFiles_ssnot() async {
+    setState(() {
+      _showfiles.clear();
+      _showfiles.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text("SlNo"),
+          GestureDetector(child: Text("Files")),
+          Column(
+            children: [
+              Text("Remove"),
+            ],
+          ),
+        ],
+      ));
+    });
+
+    var path = await ExtStorage.getExternalStorageDirectory();
+    var files = Directory(path!+"/ssnotes"!).listSync(recursive: true);
+    int i = 0;
+    files.forEach((f) {
+      i++;
+      setState(() {
+        _showfiles.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(flex: 1, child: Text("$i")),
+            Expanded(flex: 5, child: Text("${f.path.split("/").last}")),
+            Expanded(
+              flex: 2,
+              child: IconButton(
+                focusColor: Colors.deepPurpleAccent,
+                hoverColor: Colors.deepPurpleAccent,
+                icon: Icon(Icons.delete_forever),
+                onPressed: () {
+                  f.delete();
+                  ShowFiles();
+                },
+              ),
+            ),
+          ],
+        ));
+      });
+    });
+  }
+
+  Future<void> ShowFiles_fil() async {
+    setState(() {
+      _showfiles.clear();
+      _showfiles.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text("SlNo"),
+          GestureDetector(child: Text("Files")),
+          Column(
+            children: [
+              Text("Remove"),
+            ],
+          ),
+        ],
+      ));
+    });
+
+    var path = await getExternalStorageDirectory();
+    var files = Directory(path!.path).listSync(recursive: true);
     int i = 0;
     files.forEach((f) {
       i++;
