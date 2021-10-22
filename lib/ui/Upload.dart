@@ -395,7 +395,7 @@ class _UploadState extends State<Upload> {
                 icon: Icon(Icons.delete_forever),
                 onPressed: () {
                   f.delete();
-                  ShowFiles();
+                  ShowFiles_ssnot();
                 },
               ),
             ),
@@ -441,7 +441,7 @@ class _UploadState extends State<Upload> {
                 icon: Icon(Icons.delete_forever),
                 onPressed: () {
                   f.delete();
-                  ShowFiles();
+                  ShowFiles_fil();
                 },
               ),
             ),
