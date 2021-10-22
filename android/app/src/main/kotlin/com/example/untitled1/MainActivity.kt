@@ -88,7 +88,11 @@ class MainActivity: FlutterActivity() {
 
     public fun Fromwhats(mobile: String, msg: String) {
         val sendIntent = Intent()
-        sendIntent.setAction(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT <= 28) {
+            sendIntent.setAction(Intent.ACTION_VIEW);
+
+        } else
+            sendIntent.setAction(Intent.ACTION_SEND);
         val url =
             "https://wa.me/$mobile" + "?text=" + URLEncoder.encode(msg, "utf-8")
         val s = "https://api.whatsapp.com/send?phone=917012438494&text=Message to send"
@@ -131,6 +135,7 @@ class MainActivity: FlutterActivity() {
         // get available share intents
         var packageToBeFiltered: String = "com.whats"
         var targets = ArrayList<Intent>();
+//        var template = Intent(Intent.ACTION_SEND);
         var template = Intent(Intent.ACTION_SEND);
         template.setType("text/plain");
         var candidates: List<ResolveInfo> =

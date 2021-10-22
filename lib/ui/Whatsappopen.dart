@@ -246,6 +246,7 @@ class WhatsAppopen extends StatelessWidget {
     if (text.isNotEmpty) {
       print(Constants.Sdk);
       print(Constants.Sdk);
+      var message = context.watch<WhatsAppprovider>().whatsappmessage;
       if (Constants.Sdk >= 19 && Constants.Sdk <= 28) {
         print(type);
         if (type == 'z') {
@@ -262,12 +263,12 @@ class WhatsAppopen extends StatelessWidget {
               : throw 'Could not launch $component2';
         } else {
           if (type == 'A')
-            ShareService().openWhats(text, "hi", 'Z');
+            ShareService().openWhats(text, message, 'Z');
           else
-            ShareService().openWhats(text, "hi", type);
+            ShareService().openWhats(text, message, type);
         }
       } else if (Constants.Sdk >= 29)
-        ShareService().openWhats(text, "hi", type);
+        ShareService().openWhats(text, message, type);
       else {
         // var component2 =
         //     "whatsapp://917012438494?text=The text message goes here";
