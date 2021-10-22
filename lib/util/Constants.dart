@@ -5,4 +5,6 @@ class Constants {
   static const String FAVPORT2_TIMEOUT = "fav2_timeout";
 
   static int Sdk = 19;
+
+  static String MESSAGE_WHATSAPP="MESSAGE_WHATSAPP";
 }

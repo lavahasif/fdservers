@@ -9,4 +9,18 @@ class WhatsAppprovider with ChangeNotifier, DiagnosticableTreeMixin {
     _numberlist = value;
     notifyListeners();
   }
+
+  var _whatsappmessage = "";
+
+  get whatsappmessage => _whatsappmessage;
+
+  set whatsappmessage(value) {
+    _whatsappmessage = value;
+    notifyListeners();
+  }
+
+   whatsappmessage_up(value) {
+    _whatsappmessage = value;
+
+  }
 }

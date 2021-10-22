@@ -18,7 +18,12 @@ class ListNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> numberlist2 = context.watch<WhatsAppprovider>().numberlist;
+    List<String> numberlist2 = context
+        .watch<WhatsAppprovider>()
+        .numberlist;
+    var whatsappmessage = context
+        .watch<WhatsAppprovider>()
+        .whatsappmessage;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -62,7 +67,10 @@ class ListNumber extends StatelessWidget {
           height: 25,
         ),
         Container(
-          height: 500,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
           padding: EdgeInsets.only(top: 75),
           child: ListView.builder(
               shrinkWrap: true,
@@ -96,14 +104,19 @@ class ListNumber extends StatelessWidget {
                             suffixIcon: Wrap(
                               children: [
                                 IconButton(
-                                    icon: Icon(Icons.business,color: Colors.green),
-                                    onPressed: () => open(context,
-                                        _portController[index].text, "B")),
+                                    icon: Icon(
+                                        Icons.business, color: Colors.green),
+                                    onPressed: () =>
+                                        open(context,
+                                            _portController[index].text, "B",
+                                            whatsappmessage)),
                                 IconButton(
                                     icon: FaIcon(FontAwesomeIcons.whatsapp,
                                         color: Colors.green),
-                                    onPressed: () => open(context,
-                                        _portController[index].text, "C")),
+                                    onPressed: () =>
+                                        open(context,
+                                            _portController[index].text, "C",
+                                            whatsappmessage)),
                                 IconButton(
                                     icon: Icon(
                                       Icons.close,
@@ -123,15 +136,33 @@ class ListNumber extends StatelessWidget {
     );
   }
 
-  Future<void> open(BuildContext context, text, type) async {
+  Future<void> open(BuildContext context, text, type, String messages) async {
     // _portController.text = "919747200785";
 
     if (text.isNotEmpty) {
       print(Constants.Sdk);
       print(Constants.Sdk);
 
-      if (Constants.Sdk >= 29)
-        shareService.openWhats(text, "hi", type);
+      var message = messages;
+      if (Constants.Sdk >= 19 && Constants.Sdk <= 28) {
+        print(type);
+        if (type == 'A') {
+          print(type);
+          // var component2 =
+          //     "whatsapp://917012438494?text=The text message goes here";
+          var component2 = "https://wa.me/${text.replaceAll("+", "")}/?text=hi";
+          print(component2);
+          // var component2 = "https://api.whatsapp.com/send?phone="+ text.replaceAll("+", "") +"&text=" + Uri.encodeComponent("mensaje");;
+          // var url = Uri.encodeComponent(component);
+          var bool = await canLaunch(component2);
+          bool
+              ? await launch(component2)
+              : throw 'Could not launch $component2';
+        } else {
+          ShareService().openWhats(text, message, type);
+        }
+      } else if (Constants.Sdk >= 29)
+        ShareService().openWhats(text, message, type);
       else {
         // var component2 =
         //     "whatsapp://917012438494?text=The text message goes here";

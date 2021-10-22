@@ -13,9 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 class WhatsAppopen extends StatelessWidget {
   WhatsAppopen({Key? key}) : super(key: key);
   var _portController = TextEditingController(text: "");
+  var _messageController = TextEditingController(text: "Hi");
 
   @override
   Widget build(BuildContext context) {
+    _messageController.text =
+        prefs.getString(Constants.MESSAGE_WHATSAPP) ?? "hi";
+    Provider.of<WhatsAppprovider>(context, listen: false)
+        .whatsappmessage_up(_messageController.text);
     _portController.text = proces_txt;
     var scrollController = ScrollController();
     return Scaffold(
@@ -101,6 +106,58 @@ class WhatsAppopen extends StatelessWidget {
                       )),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                      flex: 7,
+                      child: TextFormField(
+                        maxLines: 6,
+                        keyboardType: TextInputType.number,
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Message',
+                            suffixIcon: Wrap(
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.save),
+                                    onPressed: () {
+                                      var text = _messageController.text;
+                                      if (text.isNotEmpty)
+                                        prefs.setString(
+                                            Constants.MESSAGE_WHATSAPP, text);
+                                      context
+                                              .read<WhatsAppprovider>()
+                                              .whatsappmessage =
+                                          _messageController.text;
+                                    }),
+                                IconButton(
+                                    icon: Icon(Icons.paste),
+                                    onPressed: () async {
+                                      final ClipboardData? data =
+                                          await Clipboard.getData(
+                                              Clipboard.kTextPlain);
+                                      if (data != null) {
+                                        var cp = data.text
+                                            ?.replaceAll("+", '')
+                                            .replaceAll('|', '');
+                                        ;
+                                        if (cp!.substring(0, 1) == "0")
+                                          _messageController.text =
+                                              cp.substring(1);
+                                        else
+                                          _messageController.text = cp;
+                                      }
+                                    }),
+                                IconButton(
+                                    icon: Icon(Icons.close),
+                                    onPressed: () =>
+                                        _messageController.clear()),
+                              ],
+                            )),
+                      )),
+                ],
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -164,14 +221,31 @@ class WhatsAppopen extends StatelessWidget {
     );
   }
 
-  Future<void> open(BuildContext context, type) async {
+  Future<void> open(BuildContext context, String type) async {
     // _portController.text = "919747200785";
     var text = _portController.text;
 
     if (text.isNotEmpty) {
       print(Constants.Sdk);
       print(Constants.Sdk);
-      if (Constants.Sdk >= 29)
+      if (Constants.Sdk >= 19 && Constants.Sdk <= 28) {
+        print(type);
+        if (type == 'A') {
+          print(type);
+          // var component2 =
+          //     "whatsapp://917012438494?text=The text message goes here";
+          var component2 = "https://wa.me/${text.replaceAll("+", "")}/?text=hi";
+          print(component2);
+          // var component2 = "https://api.whatsapp.com/send?phone="+ text.replaceAll("+", "") +"&text=" + Uri.encodeComponent("mensaje");;
+          // var url = Uri.encodeComponent(component);
+          var bool = await canLaunch(component2);
+          bool
+              ? await launch(component2)
+              : throw 'Could not launch $component2';
+        } else {
+          ShareService().openWhats(text, "hi", type);
+        }
+      } else if (Constants.Sdk >= 29)
         ShareService().openWhats(text, "hi", type);
       else {
         // var component2 =
