@@ -113,7 +113,6 @@ class WhatsAppopen extends StatelessWidget {
                       child: TextFormField(
                         maxLines: 6,
                         minLines: 2,
-                        keyboardType: TextInputType.number,
                         controller: _messageController,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -198,18 +197,36 @@ class WhatsAppopen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      height: 63,
-                      child: RaisedButton(
-                          color: Colors.blue,
-                          child: Text("Open All",
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            open(context, "A");
-                          }),
+                      child: Container(
+                        height: 63,
+                        child: RaisedButton(
+                            color: Colors.blue,
+                            child: Text("Open All",
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              open(context, "A");
+                            }),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Container(
+                        height: 63,
+                        child: RaisedButton(
+                            color: Colors.blue,
+                            child: Text("Open All2",
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              open(context, "W");
+                            }),
+                      ),
                     ),
                   ),
                 ],
               ),
+
               // Container(
               //     height: 300.0,
               //     child:
@@ -245,7 +262,7 @@ class WhatsAppopen extends StatelessWidget {
               : throw 'Could not launch $component2';
         } else {
           if (type == 'A')
-            ShareService().openWhats(text, "hi", 'W');
+            ShareService().openWhats(text, "hi", 'Z');
           else
             ShareService().openWhats(text, "hi", type);
         }

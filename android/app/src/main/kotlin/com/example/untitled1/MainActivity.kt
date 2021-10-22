@@ -65,6 +65,8 @@ class MainActivity: FlutterActivity() {
                             if (packages == "A")
                                 Fromwhats(mob, message)
                             else if (packages == "W")
+                                Opwhats(mob, message)
+                            else if (packages == "Z")
                                 Fromwhats_opweb(mob, message)
                             else if (packages == "B")
                                 FromwhatsView(mob, message, "com.whatsapp.w4b")
@@ -99,7 +101,7 @@ class MainActivity: FlutterActivity() {
 
     fun Fromwhats_opweb(mobile: String, msg: String) {
         val sendIntent = Intent()
-        sendIntent.setAction(Intent.ACTION_VIEW);
+        sendIntent.setAction(Intent.ACTION_SEND);
 
         val url =
             "https://wa.me/$mobile" + "?text=" + URLEncoder.encode(msg, "utf-8")
@@ -125,7 +127,7 @@ class MainActivity: FlutterActivity() {
 
     }
 
-    public fun Opwhats() {
+    public fun Opwhats(mobile: String, msg: String) {
         // get available share intents
         var packageToBeFiltered: String = "com.whats"
         var targets = ArrayList<Intent>();
@@ -138,9 +140,11 @@ class MainActivity: FlutterActivity() {
         for (candidate in candidates) {
             var packageName: String = candidate.activityInfo.packageName;
             if (packageName.contains("whats")) {
-                var target: Intent = Intent(android.content.Intent.ACTION_SEND);
-                target.setType("text/plain");
-                target.putExtra(Intent.EXTRA_TEXT, "Text to share");
+                var target: Intent = Intent(android.content.Intent.ACTION_VIEW);
+                val url =
+                    "https://wa.me/$mobile" + "?text=" + URLEncoder.encode(msg, "utf-8")
+                val s = "https://api.whatsapp.com/send?phone=917012438494&text=Message to send"
+                target.setData(Uri.parse(url))
                 target.setPackage(packageName);
                 targets.add(target);
                 val chooser = Intent.createChooser(target, "Open Whatspp").apply {
