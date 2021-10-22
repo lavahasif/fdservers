@@ -112,6 +112,7 @@ class WhatsAppopen extends StatelessWidget {
                       flex: 7,
                       child: TextFormField(
                         maxLines: 6,
+                        minLines: 2,
                         keyboardType: TextInputType.number,
                         controller: _messageController,
                         decoration: InputDecoration(
@@ -230,12 +231,12 @@ class WhatsAppopen extends StatelessWidget {
       print(Constants.Sdk);
       if (Constants.Sdk >= 19 && Constants.Sdk <= 28) {
         print(type);
-        if (type == 'A') {
+        if (type == 'z') {
           print(type);
           // var component2 =
           //     "whatsapp://917012438494?text=The text message goes here";
           var component2 = "https://wa.me/${text.replaceAll("+", "")}/?text=hi";
-          print(component2);
+          // print(component2);
           // var component2 = "https://api.whatsapp.com/send?phone="+ text.replaceAll("+", "") +"&text=" + Uri.encodeComponent("mensaje");;
           // var url = Uri.encodeComponent(component);
           var bool = await canLaunch(component2);
@@ -243,7 +244,10 @@ class WhatsAppopen extends StatelessWidget {
               ? await launch(component2)
               : throw 'Could not launch $component2';
         } else {
-          ShareService().openWhats(text, "hi", type);
+          if (type == 'A')
+            ShareService().openWhats(text, "hi", 'W');
+          else
+            ShareService().openWhats(text, "hi", type);
         }
       } else if (Constants.Sdk >= 29)
         ShareService().openWhats(text, "hi", type);

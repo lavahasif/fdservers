@@ -64,6 +64,8 @@ class MainActivity: FlutterActivity() {
                         if (mob != null) {
                             if (packages == "A")
                                 Fromwhats(mob, message)
+                            else if (packages == "W")
+                                Fromwhats_opweb(mob, message)
                             else if (packages == "B")
                                 FromwhatsView(mob, message, "com.whatsapp.w4b")
                             else
@@ -84,7 +86,21 @@ class MainActivity: FlutterActivity() {
 
     public fun Fromwhats(mobile: String, msg: String) {
         val sendIntent = Intent()
-        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setAction(Intent.ACTION_VIEW);
+        val url =
+            "https://wa.me/$mobile" + "?text=" + URLEncoder.encode(msg, "utf-8")
+        val s = "https://api.whatsapp.com/send?phone=917012438494&text=Message to send"
+        sendIntent.setData(Uri.parse(url))
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+//        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+
+    }
+
+    fun Fromwhats_opweb(mobile: String, msg: String) {
+        val sendIntent = Intent()
+        sendIntent.setAction(Intent.ACTION_VIEW);
+
         val url =
             "https://wa.me/$mobile" + "?text=" + URLEncoder.encode(msg, "utf-8")
         val s = "https://api.whatsapp.com/send?phone=917012438494&text=Message to send"
