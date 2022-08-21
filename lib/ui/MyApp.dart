@@ -15,6 +15,7 @@ import '../main.dart';
 import 'IpWidget.dart';
 import 'NoteRegistration.dart';
 import 'Settings.dart';
+import 'SocketIO.dart';
 import 'share.dart';
 
 class MyApp extends StatelessWidget {
@@ -22,8 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     var title2 = 'Utility App';
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -85,6 +84,21 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 48,
             child: IconButton(
               icon: Icon(
+                Icons.signal_cellular_alt,
+                size: 30,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SocketIo()));
+              },
+            ),
+          ),
+          Container(
+            height: 48,
+            width: 48,
+            child: IconButton(
+              icon: Icon(
                 Icons.message_outlined,
                 size: 30,
               ),
@@ -105,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               color: Colors.white,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Upload()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Upload()));
               },
             ),
           ),
@@ -192,10 +206,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: IconButton(icon: Icon(Icons.settings),onPressed: (){
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => Settings()));
-                  },),
+                  child: IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
+                    },
+                  ),
                 ),
               ],
             ),

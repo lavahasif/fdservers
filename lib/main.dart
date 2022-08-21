@@ -28,6 +28,7 @@ var address = "";
 
 var url_ = '';
 var mfav_port = '8069';
+var mfav_port_sock = '3000';
 var mfav_ip = '192.168.43.84';
 var mfav_timeout = '5000';
 var mfav2_timeout = '5000';

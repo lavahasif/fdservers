@@ -55,6 +55,7 @@ Future<void> Initial() async {
   initializeDatabase();
   prefs = await SharedPreferences.getInstance();
   mfav_port = prefs.getString(Constants.FAVPORT) ?? "8069";
+  mfav_port_sock = prefs.getString(Constants.FAVPORT_SOCKET) ?? "3000";
   mfav_ip = prefs.getString(Constants.FAVPORT_IP) ?? "192.168.43.84";
   mfav_timeout = prefs.getString(Constants.FAVPORT_TIMEOUT) ?? "5000";
   mfav2_timeout = prefs.getString(Constants.FAVPORT2_TIMEOUT) ?? "5000";
@@ -82,8 +83,9 @@ Future<void> Initial() async {
         await AndroidIp.EnableStoragePermission;
       }
     } else {
-      database =
-          await $FloorAppDatabase.databaseBuilder('app_database.db').addMigrations([migration1to2]).build();
+      database = await $FloorAppDatabase
+          .databaseBuilder('app_database.db')
+          .addMigrations([migration1to2]).build();
       notesdao = database!.notesdao;
       tutsdao = database?.tutsdao;
       // notesdao.insertNotes(Notes(null, "asif", "DSf", "ds", "d"));
@@ -173,7 +175,7 @@ r.Router Routers() {
     final imageBytes = await rootBundle.load("assets/img_2.png");
     File fi = await writeToFile(imageBytes, "img_2.png");
     var request =
-    http.MultipartRequest('POST', Uri.parse('$address:8081/api/upload'));
+        http.MultipartRequest('POST', Uri.parse('$address:8081/api/upload'));
     request.files.add(await http.MultipartFile.fromPath('image', fi.path));
 
     http.StreamedResponse response = await request.send();
@@ -302,7 +304,7 @@ Future<Response> third(Request request) async {
   var header2 = request.headers['content-type'];
   var header = HeaderValue.parse(header2!);
   final transformer =
-  new mime.MimeMultipartTransformer(header.parameters['boundary']!);
+      new mime.MimeMultipartTransformer(header.parameters['boundary']!);
   final bodyStream = Stream.fromIterable([dataBytes]);
   try {
     final parts = await transformer.bind(bodyStream).toList();
@@ -359,7 +361,7 @@ Future<void> four(Request request) async {
   var header2 = request.headers['content-type'];
   var header = HeaderValue.parse(header2!);
   final transformer =
-  new mime.MimeMultipartTransformer(header.parameters['boundary']!);
+      new mime.MimeMultipartTransformer(header.parameters['boundary']!);
   transformer.bind(request.read());
   final bodyStream = Stream.fromIterable([dataBytes]);
   final parts = await transformer.bind(bodyStream).toList();
@@ -501,12 +503,12 @@ Future<bool> sendFile(String paths, ip) async {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
-        return true;
-      } else {
-        print(response.reasonPhrase);
-        return false;
-      }
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.reasonPhrase);
+      return false;
+    }
   } catch (e) {
     print(e);
     return false;

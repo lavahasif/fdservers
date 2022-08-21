@@ -5,6 +5,7 @@ import 'package:untitled1/main.dart';
 import 'package:untitled1/util/Constants.dart';
 
 var _portController = TextEditingController(text: "8069");
+var _portController_socket = TextEditingController(text: "3000");
 var _ipController = TextEditingController(text: "192.168.43.84");
 var _timeoutController = TextEditingController(text: "5000");
 var _timeout2Controller = TextEditingController(text: "5000");
@@ -16,6 +17,8 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _portController.text = prefs.getString(Constants.FAVPORT) ?? "8069";
+    _portController_socket.text =
+        prefs.getString(Constants.FAVPORT_SOCKET) ?? "3000";
 
     _ipController.text =
         prefs.getString(Constants.FAVPORT_IP) ?? "192.168.43.84";
@@ -56,6 +59,16 @@ class Settings extends StatelessWidget {
                 flex: 7,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
+                  controller: _portController_socket,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'PortSocketIO',
+                  ),
+                )),
+            Expanded(
+                flex: 7,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: _timeoutController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -83,7 +96,7 @@ class Settings extends StatelessWidget {
                     child: RaisedButton(
                         color: Colors.blue,
                         child:
-                        Text("Save", style: TextStyle(color: Colors.white)),
+                            Text("Save", style: TextStyle(color: Colors.white)),
                         onPressed: () {
                           saveTopre(context);
                         }),
@@ -99,18 +112,22 @@ class Settings extends StatelessWidget {
 
   void saveTopre(BuildContext context) {
     var port = _portController.text;
+    var port_socket = _portController_socket.text;
     var ip = _ipController.text;
     var timeout = _timeoutController.text;
     var timeout2 = _timeout2Controller.text;
     if (port.isNotEmpty &&
         ip.isNotEmpty &&
+        port_socket.isNotEmpty &&
         timeout.isNotEmpty &&
         timeout.isNotEmpty) {
       prefs.setString(Constants.FAVPORT, port);
+      prefs.setString(Constants.FAVPORT_SOCKET, port_socket);
       prefs.setString(Constants.FAVPORT_IP, ip);
       prefs.setString(Constants.FAVPORT_TIMEOUT, timeout);
       prefs.setString(Constants.FAVPORT2_TIMEOUT, timeout2);
       mfav_port = port;
+      mfav_port_sock = port_socket;
       mfav_ip = ip;
       mfav_timeout = timeout;
       mfav2_timeout = timeout2;

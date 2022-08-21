@@ -56,6 +56,8 @@ dependencies:
   shareapks: ^0.0.2
   file_picker: ^4.1.5
   font_awesome_flutter: ^9.2.0
+  socket_io_client: ^2.0.0
+  platform: ^3.1.0
 
 
 

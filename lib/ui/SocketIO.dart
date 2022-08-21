@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/src/provider.dart';
 import 'package:signalr_core/signalr_core.dart';
+
+// import 'package:socket_io_client/socket_io_client.dart';
 import 'package:untitled1/provider/MyProvider.dart';
 import 'package:untitled1/provider/UploadProvider.dart';
 import 'package:untitled1/service/Service.dart';
@@ -13,28 +15,32 @@ import 'package:untitled1/util/webserver.dart';
 
 import '../main.dart';
 import 'WebSocket.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class Signal extends StatefulWidget {
-  const Signal({Key? key}) : super(key: key);
+// import 'package:socket_io_client/socket_io_client.dart';
+class SocketIo extends StatefulWidget {
+  const SocketIo({Key? key}) : super(key: key);
 
   @override
-  State<Signal> createState() => _SignalState();
+  State<SocketIo> createState() => _SignalState();
 }
+IO.Socket? socket = null;
 
 var key = GlobalKey<ScaffoldState>();
 var messageWidgets = [];
 var _messageController = TextEditingController();
 var _scrollController = ScrollController();
 var _showfiles = [];
-HubConnection? connection = HubConnectionBuilder()
-    .withUrl(
-        'http://$mfav_ip:$mfav_port/chat',
-        HttpConnectionOptions(
-          logging: (level, message) => print(message),
-        ))
-    .build();
+// HubConnection? connection = HubConnectionBuilder()
+//     .withUrl(
+//         'http://$mfav_ip:$mfav_port/chat',
+//         HttpConnectionOptions(
+//           logging: (level, message) => print(message),
+//         ))
+//     .build();
 
-class _SignalState extends State<Signal> {
+class _SignalState extends State<SocketIo> {
+
   ShareService services = ShareService();
   var ip2 = "";
   var isde = false;
@@ -50,81 +56,25 @@ class _SignalState extends State<Signal> {
 
   var retry = 0;
 
-  void initHub() {
-    connection = HubConnectionBuilder()
-        .withUrl(
-            'http://${ip2}:$mfav_port/chat',
-            HttpConnectionOptions(
-              logging: (level, message) => print(message),
-            ))
-        .build();
-    connection?.start()!.then((value) {
+  void connectAndListen() {
+    socket = IO.io('http://${ip2}:$mfav_port_sock/',
+        IO.OptionBuilder().setTransports(['websocket']).build());
+
+    socket?.onConnect((_) {
+      print('connect');
+      socket?.emit('chat message', 'test');
       context.read<UploadProvider>().isConnected = "Connected";
-    }).onError((error, stackTrace) {
+    });
+    socket?.onerror((err) {
       context.read<UploadProvider>().isConnected = "Failed";
       retry++;
       if (retry < 5)
         SetSocket(context);
       else if (retry == 6) SetSocket6(context);
     });
-    connection?.on('newMessage', (message) {
-      print(message.toString());
-      var length = messageWidgets.length;
-      Widget padding2 = Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: GestureDetector(
-                  onLongPress: () {
-                    _copy(message![1]);
-                  },
-                  onTap: () {
-                    print("tap");
-                    if (getUrl(message![1]) != "")
-                      context.read<MyProvider>().launchURL(message[1]);
-                  },
-                  onDoubleTap: () {
-                    setState(() {
-                      messageWidgets.removeAt(length);
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xDD1192D5),
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        if (getUrl(message![1]) != "")
-                          Text(
-                            "${message[1]}",
-                            style: new TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline),
-                          )
-                        else
-                          Text("${message[1]}",
-                              style: TextStyle(color: Colors.black87))
-                      ],
-                    ),
-                  )),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-          ],
-        ),
-      );
-      setState(() {
-        messageWidgets.add(padding2);
-      });
-    });
-    connection?.on('newMessage2', (message) {
+
+    //When an event recieved from server, data is added to the stream
+    socket?.on('event', (message) {
       if (my == "") {
         print(message.toString());
         var length = messageWidgets.length;
@@ -185,6 +135,206 @@ class _SignalState extends State<Signal> {
         my = "";
       }
     });
+    socket?.on('chat message', (message) {
+      print(message.toString());
+      var length = messageWidgets.length;
+      Widget padding2 = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                  onLongPress: () {
+                    _copy(message);
+                  },
+                  onTap: () {
+                    print("tap");
+                    if (getUrl(message) != "")
+                      context.read<MyProvider>().launchURL(message);
+                  },
+                  onDoubleTap: () {
+                    setState(() {
+                      messageWidgets.removeAt(length);
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xDD1192D5),
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        if (getUrl(message) != "")
+                          Text(
+                            "${message}",
+                            style: new TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline),
+                          )
+                        else
+                          Text("${message}",
+                              style: TextStyle(color: Colors.black87))
+                      ],
+                    ),
+                  )),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(),
+            ),
+          ],
+        ),
+      );
+      setState(() {
+        messageWidgets.add(padding2);
+      });
+    });
+    socket?.onDisconnect((_) {
+      context.read<UploadProvider>().isConnected = "Connected";
+      ;
+      print('disconnect');
+    });
+  }
+
+  void initHub() {
+    // connection = HubConnectionBuilder()
+    //     .withUrl(
+    //         'http://${ip2}:$mfav_port/chat',
+    //         HttpConnectionOptions(
+    //           logging: (level, message) => print(message),
+    //         ))
+    //     .build();
+    // connection?.start()!.then((value) {
+    //   context.read<UploadProvider>().isConnected = "Connected";
+    // }).onError((error, stackTrace) {
+    //   context.read<UploadProvider>().isConnected = "Failed";
+    //   retry++;
+    //   if (retry < 5)
+    //     SetSocket(context);
+    //   else if (retry == 6) SetSocket6(context);
+    // });
+    // connection?.on('newMessage', (message) {
+    //   print(message.toString());
+    //   var length = messageWidgets.length;
+    //   Widget padding2 = Padding(
+    //     padding: const EdgeInsets.all(8.0),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: [
+    //         Expanded(
+    //           flex: 1,
+    //           child: GestureDetector(
+    //               onLongPress: () {
+    //                 _copy(message![1]);
+    //               },
+    //               onTap: () {
+    //                 print("tap");
+    //                 if (getUrl(message![1]) != "")
+    //                   context.read<MyProvider>().launchURL(message[1]);
+    //               },
+    //               onDoubleTap: () {
+    //                 setState(() {
+    //                   messageWidgets.removeAt(length);
+    //                 });
+    //               },
+    //               child: Container(
+    //                 padding: EdgeInsets.all(8.0),
+    //                 decoration: BoxDecoration(
+    //                   borderRadius: BorderRadius.circular(10),
+    //                   color: Color(0xDD1192D5),
+    //                 ),
+    //                 child: Stack(
+    //                   children: <Widget>[
+    //                     if (getUrl(message![1]) != "")
+    //                       Text(
+    //                         "${message[1]}",
+    //                         style: new TextStyle(
+    //                             color: Colors.blue,
+    //                             decoration: TextDecoration.underline),
+    //                       )
+    //                     else
+    //                       Text("${message[1]}",
+    //                           style: TextStyle(color: Colors.black87))
+    //                   ],
+    //                 ),
+    //               )),
+    //         ),
+    //         Expanded(
+    //           flex: 1,
+    //           child: Container(),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    //   setState(() {
+    //     messageWidgets.add(padding2);
+    //   });
+    // });
+    // connection?.on('newMessage2', (message) {
+    //   if (my == "") {
+    //     print(message.toString());
+    //     var length = messageWidgets.length;
+    //     Widget padding2 = Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.start,
+    //         children: [
+    //           Expanded(
+    //             flex: 1,
+    //             child: InkWell(
+    //                 onLongPress: () {
+    //                   print("tap");
+    //                   _copy(message![1]);
+    //                 },
+    //                 onTap: () {
+    //                   if (getUrl(message![1]) != "")
+    //                     context.read<MyProvider>().launchURL(message[1]);
+    //                 },
+    //                 onDoubleTap: () {
+    //                   setState(() {
+    //                     messageWidgets.removeAt(length);
+    //                   });
+    //                 },
+    //                 child: Container(
+    //                   padding: EdgeInsets.all(8.0),
+    //                   decoration: BoxDecoration(
+    //                     borderRadius: BorderRadius.circular(10),
+    //                     color: Color(0xDDCED9E2),
+    //                   ),
+    //                   child: Stack(
+    //                     children: <Widget>[
+    //                       if (getUrl(message![1]) != "")
+    //                         Text(
+    //                           "${message[1]}",
+    //                           style: new TextStyle(
+    //                               color: Colors.blue,
+    //                               decoration: TextDecoration.underline),
+    //                         )
+    //                       else
+    //                         Text("${message[1]}",
+    //                             style: TextStyle(color: Colors.black87))
+    //                     ],
+    //                   ),
+    //                 )),
+    //           ),
+    //           Expanded(
+    //             flex: 1,
+    //             child: Container(),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //     setState(() {
+    //       messageWidgets.add(padding2);
+    //     });
+    //   } else {
+    //     my = "";
+    //   }
+    // });
+    connectAndListen();
   }
 
   var my = "";
@@ -193,8 +343,8 @@ class _SignalState extends State<Signal> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    if (connection != null) connection?.stop();
-    connection = null;
+    // if (connection != null) connection?.stop();
+    // connection = null;
   }
 
   @override
@@ -260,7 +410,7 @@ class _SignalState extends State<Signal> {
     return Scaffold(
       key: key,
       appBar: AppBar(
-        title: Text("Signal"),
+        title: Text("SocketIO"),
         actions: [
           IconButton(
             icon: Icon(Icons.cast_connected_outlined),
@@ -422,8 +572,10 @@ class _SignalState extends State<Signal> {
                                             _scrollController
                                                 .position.maxScrollExtent);
                                       });
-                                      await connection?.invoke('SendMessage2',
-                                          args: ['${_messageController.text}']);
+                                      socket?.emit('chat message',
+                                          _messageController.text);
+                                      // await connection?.invoke('SendMessage2',
+                                      //     args: ['${_messageController.text}']);
                                       _messageController.text = "";
                                     }
                                   },
@@ -447,7 +599,7 @@ class _SignalState extends State<Signal> {
       var is8081 = false;
       var is1433 = false;
       try {
-        var socket = await Socket.connect(ip, int.parse(mfav_port),
+        var socket = await Socket.connect(ip, int.parse(mfav_port_sock),
             timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         context.read<UploadProvider>().ip = ip;
@@ -526,7 +678,7 @@ class _SignalState extends State<Signal> {
       var ip = event;
 
       try {
-        var socket = await Socket.connect(ip, int.parse(mfav_port),
+        var socket = await Socket.connect(ip, int.parse(mfav_port_sock),
             timeout: Duration(milliseconds: int.parse(mfav_timeout)));
         socket.close();
         context.read<UploadProvider>().ip = ip;

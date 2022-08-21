@@ -377,7 +377,7 @@ class _UploadState extends State<Upload> {
     });
 
     var path = await ExtStorage.getExternalStorageDirectory();
-    var files = Directory(path!+"/ssnotes"!).listSync(recursive: true);
+    var files = Directory(path!+"/ssnotes").listSync(recursive: true);
     int i = 0;
     files.forEach((f) {
       i++;
