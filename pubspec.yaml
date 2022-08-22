@@ -45,7 +45,7 @@ dependencies:
   android_util: ^0.0.6
   ext_storage:
     git:
-      url: git://github.com/lavahasif/ext_storage_ups.git
+      url: https://github.com/lavahasif/ext_storage_ups.git
   floor: ^1.2.0
   permission_handler: ^8.1.6
   device_info: ^2.0.2

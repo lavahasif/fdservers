@@ -210,7 +210,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: acdb02277521a6f3641f73a97485e0f219a4227a
-      url: "git://github.com/lavahasif/ext_storage_ups.git"
+      url: "https://github.com/lavahasif/ext_storage_ups.git"
     source: git
     version: "1.0.3"
   fake_async:
