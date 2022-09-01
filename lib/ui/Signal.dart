@@ -43,7 +43,7 @@ class _SignalState extends State<Signal> {
   initState() {
     super.initState();
     SetSocket(context);
-    initHub();
+    // initHub();
 
     if (proces_txt.length > 0) _messageController.text = proces_txt;
   }

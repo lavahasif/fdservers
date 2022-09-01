@@ -15,7 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.net.URLEncoder
 
-class MainActivity: FlutterActivity() {
+class MainActivity : FlutterActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class MainActivity: FlutterActivity() {
 
 //                if (intent.type == "text/plain") {
 
-                    result.success(savedProcessIntentText_)
+                result.success(savedProcessIntentText_)
 //                    savedProcessIntentText_ = null;
 //                }
             } else if (call.method == "getSharedDatafile") {
@@ -50,6 +50,9 @@ class MainActivity: FlutterActivity() {
                 deletetemp()
             } else if (call.method == "version") {
                 result.success(Build.VERSION.SDK_INT)
+
+            } else if (call.method == "opendev") {
+                openDeveloper()
 
             } else if (call.method == "whats") {
                 try {
@@ -83,6 +86,11 @@ class MainActivity: FlutterActivity() {
             }
 
         }
+
+    }
+
+    private fun openDeveloper() {
+        startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
 
     }
 

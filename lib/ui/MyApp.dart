@@ -12,6 +12,7 @@ import 'package:untitled1/ui/Upload.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
+import '../service/Service.dart';
 import 'IpWidget.dart';
 import 'NoteRegistration.dart';
 import 'Settings.dart';
@@ -89,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               color: Colors.white,
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => SocketIo()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SocketIo()));
               },
             ),
           ),
@@ -151,6 +152,20 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegRoute()));
+              },
+            ),
+          ),
+          Container(
+            height: 48,
+            width: 48,
+            child: IconButton(
+              icon: Icon(
+                Icons.developer_board,
+                size: 30,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                ShareService().opendeveloper();
               },
             ),
           )
