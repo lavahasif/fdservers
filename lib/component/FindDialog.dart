@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/provider/MedaProvider.dart';
+
+import '../provider/MedaProvider.dart';
+
 
 class FindDialog extends StatelessWidget {
   Function(Map<int, String> text) okCallback;

@@ -5,11 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/provider/UploadProvider.dart';
-import 'package:untitled1/service/Service.dart';
-import 'package:untitled1/ui/WebSocketClient.dart';
+// import 'package:untitled1/provider/UploadProvider.dart';
+// import 'package:untitled1/service/Service.dart';
+// import 'package:untitled1/ui/WebSocketClient.dart';
 
 import '../main.dart';
+import '../provider/UploadProvider.dart';
+import '../service/Service.dart';
+import 'WebSocketClient.dart';
 import 'WebSocketServer.dart';
 
 class WebSockets extends StatefulWidget {
@@ -140,8 +143,8 @@ class _WebSocketsState extends State<WebSockets> {
                     Expanded(
                       child: Container(
                         height: 63,
-                        child: RaisedButton(
-                            color: Colors.blue,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                             child: Text("Save",
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
@@ -159,8 +162,8 @@ class _WebSocketsState extends State<WebSockets> {
                     Expanded(
                       child: Container(
                         height: 63,
-                        child: RaisedButton(
-                            color: Colors.blue,
+                        child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                             child: Text("Server",
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
@@ -184,8 +187,8 @@ class _WebSocketsState extends State<WebSockets> {
                     Expanded(
                       child: Container(
                         height: 63,
-                        child: RaisedButton(
-                            color: Colors.blue,
+                        child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                             child: Text("Receiver",
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
@@ -256,7 +259,7 @@ class _WebSocketsState extends State<WebSockets> {
     var clipboardData = ClipboardData(text: clip);
     print("=====>" + clip);
     Clipboard.setData(clipboardData);
-    key.currentState!.showSnackBar(SnackBar(content: Text("Copied")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied")));
   }
 
   Future<void> setIp() async {

@@ -4,19 +4,20 @@ import 'package:provider/provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
-import 'package:untitled1/provider/MedaProvider.dart';
-import 'package:untitled1/provider/MyProvider.dart';
-import 'package:untitled1/provider/UploadProvider.dart';
-import 'package:untitled1/ui/Signal.dart';
-import 'package:untitled1/ui/Upload.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
+import '../provider/MedaProvider.dart';
+import '../provider/MyProvider.dart';
+import '../provider/UploadProvider.dart';
 import '../service/Service.dart';
 import 'IpWidget.dart';
 import 'NoteRegistration.dart';
 import 'Settings.dart';
+import 'Signal.dart';
 import 'SocketIO.dart';
+import 'Upload.dart';
 import 'share.dart';
 
 class MyApp extends StatelessWidget {

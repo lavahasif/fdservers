@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:untitled1/abstract/crudAb.dart';
-import 'package:untitled1/main.dart';
-import 'package:untitled1/repository/AppDatabase.dart';
-import 'package:untitled1/repository/Notes.dart';
-import 'package:untitled1/repository/Notes_dao.dart';
+
+import '../abstract/crudAb.dart';
+import '../main.dart';
+import '../repository/AppDatabase.dart';
+import '../repository/Notes.dart';
+import '../repository/Notes_dao.dart';
+// import 'package:untitled1/abstract/crudAb.dart';
+// import 'package:untitled1/main.dart';
+// import 'package:untitled1/repository/AppDatabase.dart';
+// import 'package:untitled1/repository/Notes.dart';
+// import 'package:untitled1/repository/Notes_dao.dart';
 
 class RegProvider
     with

@@ -1,5 +1,6 @@
-package com.example.untitled1
+package ab.shersoft.fdserv
 
+import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+//import com.shersoft.android_ip.constant
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -54,6 +58,23 @@ class MainActivity : FlutterActivity() {
             } else if (call.method == "opendev") {
                 openDeveloper()
 
+            }else if (call.method == "call") {
+                val mob = call.argument<String>("mob")
+                if (mob != null) {
+                    constant.mob =mob
+                    callnumber(mob)
+                };
+
+
+            }
+            else if (call.method == "Dial") {
+                val mob = call.argument<String>("mob")
+                if (mob != null) {
+                    constant.mob =mob
+                    Dialnumber(mob)
+                };
+
+
             } else if (call.method == "whats") {
                 try {
                     var message = call.argument<String>("message")
@@ -86,6 +107,27 @@ class MainActivity : FlutterActivity() {
             }
 
         }
+
+    }
+
+    private fun callnumber(mob: String) {
+        val permission = Manifest.permission.CALL_PHONE
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission),
+                constant.PERMISSION_Call_CODE
+            )
+        } else {
+            val dial = "tel:" + mob
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse(dial))
+            startActivity(intent)
+        }
+
+
+    } private fun Dialnumber(mob: String) {
+        val dial = "tel:${mob}"
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse(dial))
+        startActivity(intent)
 
     }
 
@@ -315,4 +357,11 @@ class MainActivity : FlutterActivity() {
             return false
         }
     }
+}
+object constant{
+
+    val PERMISSION_Call_CODE = 25
+    var mob:String="";
+
+
 }

@@ -8,11 +8,12 @@ import 'package:ext_storage/ext_storage.dart';
 import 'package:floor/floor.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
-import 'package:untitled1/repository/Notes_dao.dart';
-import 'package:untitled1/repository/Tuts_dao.dart';
+
 
 import 'Notes.dart';
+import 'Notes_dao.dart';
 import 'Tuts.dart';
+import 'Tuts_dao.dart';
 
 part 'AppDatabase.g.dart'; // the generated code will be there
 

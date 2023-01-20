@@ -1,26 +1,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.untitled1">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ab.shersoft.fdserv">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!--    https://medium.com/androiddevelopers/custom-text-selection-actions-with-action-process-text-191f792d2999-->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <application
-        android:requestLegacyExternalStorage="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="fdServer"
-        android:icon="@mipmap/ic_launcher">
+        android:requestLegacyExternalStorage="true">
         <activity
 
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="MissingClass">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -43,20 +46,98 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ProcessTextActivity"
+            android:name=".ProcessCallActivity"
             android:exported="true"
-            android:label="Uplodafd"
+            android:label="CALL📞📞📞📞📞📞"
+            android:launchMode="singleInstancePerTask"
+
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <!--                <action android:name="android.intent.action.MAIN" />-->
                 <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
                 <data android:mimeType="text/plain" />
 
                 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-                <category android:name="android.intent.category.DEFAULT" />
+
+                <!--                <data android:scheme="http" />-->
+                <!--                <data android:scheme="https" />-->
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ProcessDialActivity"
+            android:exported="true"
+            android:label="DIAL📱📱📱📱📱📱"
+
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <!--                <action android:name="android.intent.action.MAIN" />-->
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+                <data android:mimeType="text/plain" />
+
+                <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+
+                <!--                <data android:scheme="http" />-->
+                <!--                <data android:scheme="https" />-->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProcessTextActivity"
+            android:exported="true"
+            android:label="Uplodafd"
+
+
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <!--                <action android:name="android.intent.action.MAIN" />-->
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+                <data android:mimeType="text/plain" />
+
+                <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+
+                <!--                <data android:scheme="http" />-->
+                <!--                <data android:scheme="https" />-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ProcessDialogActivity"
+            android:exported="true"
+            android:label="SHOW📞📞📞📞📞📞"
+
+
+            android:theme="@style/AppTheme.NoDisplay">
+            <intent-filter>
+                <!--                <action android:name="android.intent.action.MAIN" />-->
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+                <data android:mimeType="text/plain" />
+
+                <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+
+                <!--                <data android:scheme="http" />-->
+                <!--                <data android:scheme="https" />-->
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ProcessFileActivity"
             android:exported="true"
@@ -82,22 +163,40 @@
     <queries>
         <!-- If your app opens https URLs -->
         <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+
+
+        <intent>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
             <action android:name="android.intent.action.VIEW" />
             <!--            <category android:name="android.intent.category.BROWSABLE" />-->
 
-            <data android:scheme="http" android:mimeType="text/plain" />
+            <data
+                android:mimeType="text/plain"
+                android:scheme="http" />
 
         </intent>
         <intent>
             <action android:name="android.intent.action.SEND" />
             <!--            <category android:name="android.intent.category.BROWSABLE" />-->
-            <data android:scheme="http" android:mimeType="text/plain" />
+            <data
+                android:mimeType="text/plain"
+                android:scheme="http" />
 
         </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <!--            <category android:name="android.intent.category.BROWSABLE" />-->
-            <data android:scheme="https" android:mimeType="text/plain" />
+            <data
+                android:mimeType="text/plain"
+                android:scheme="https" />
 
         </intent>
 

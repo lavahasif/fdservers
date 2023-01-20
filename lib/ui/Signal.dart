@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/src/provider.dart';
 import 'package:signalr_core/signalr_core.dart';
-import 'package:untitled1/provider/MyProvider.dart';
-import 'package:untitled1/provider/UploadProvider.dart';
-import 'package:untitled1/service/Service.dart';
-import 'package:untitled1/util/webserver.dart';
+
 
 import '../main.dart';
+import '../provider/MyProvider.dart';
+import '../provider/UploadProvider.dart';
+import '../service/Service.dart';
+import '../util/webserver.dart';
 import 'WebSocket.dart';
 
 class Signal extends StatefulWidget {
@@ -297,8 +298,8 @@ class _SignalState extends State<Signal> {
                         Expanded(
                           child: Container(
                             height: 45,
-                            child: RaisedButton(
-                                color: Colors.blue,
+                            child:  ElevatedButton(
+                                style: ElevatedButton.styleFrom(primary:Colors.blue),
                                 child: Text("Refresh Ip",
                                     style: TextStyle(color: Colors.white)),
                                 onPressed: () {
@@ -557,7 +558,7 @@ class _SignalState extends State<Signal> {
     var clipboardData = ClipboardData(text: clip);
     print("=====>" + clip);
     Clipboard.setData(clipboardData);
-    key.currentState!.showSnackBar(SnackBar(content: Text("Copied")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied")));
 
     // Scaffold.of(context).showBottomSheet<void>(
     //   (BuildContext context) {

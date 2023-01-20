@@ -1,13 +1,14 @@
-package com.example.untitled1
+package ab.shersoft.fdserv
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import com.example.untitled1.MainActivity.Companion.isAppRunning
+import ab.shersoft.fdserv.MainActivity.Companion.isAppRunning
+//import com.shersoft.android_ip.constant
 import io.flutter.embedding.android.FlutterActivity
 
-class ProcessTextActivity : FlutterActivity() {
+class ProcessDialActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val issAppRunning = isAppRunning
@@ -17,34 +18,19 @@ class ProcessTextActivity : FlutterActivity() {
 
     fun listenProcessTextIntent(isAppRunning: Boolean) {
         openApp()
-        if (!isAppRunning) {
-            // Open app when its not running
 
-        } else {
-            // Fetch process text when the app is running.
-        }
-        activity.finish()
+//        activity.finish()
     }
 
     fun openApp() {
         saveProcessIntentText()
-        val intent: Intent =
-            getIntentToOpenMainActivity()!!
-        ContextCompat.startActivity(
-            context,
-            intent,
-            null
-        )
+
     }
 
     private fun getIntentToOpenMainActivity(): Intent? {
-        val packageName: String =
-            context.getPackageName()
-        return this
-            .getPackageManager()
-            .getLaunchIntentForPackage(packageName)
-            ?.setAction(Intent.ACTION_RUN)
-            ?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val packageName: String = context.getPackageName()
+        return this.getPackageManager().getLaunchIntentForPackage(packageName)
+            ?.setAction(Intent.ACTION_RUN)?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             ?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
     }
 
@@ -57,11 +43,18 @@ class ProcessTextActivity : FlutterActivity() {
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 var s = handletext(extras);
-                MainActivity.savedProcessIntentText_ = s;
+
+                if (s != "") Dialnumber(s)
             }
         }
 
 
+    }
+    private fun Dialnumber(mob: String) {
+        val dial = "tel:${mob}"
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(dial))
+        startActivity(intent)
+        activity.finish()
     }
 
     private fun handletext(extras: Bundle?): String {
@@ -69,7 +62,7 @@ class ProcessTextActivity : FlutterActivity() {
             intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
 
         } else {
-           ""
+            ""
         }
         if (sharedText != null) {
             return sharedText;

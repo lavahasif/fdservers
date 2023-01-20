@@ -7,10 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/provider/UploadProvider.dart';
-import 'package:untitled1/service/Service.dart';
+
 
 import '../main.dart';
+import '../provider/UploadProvider.dart';
+import '../service/Service.dart';
 
 class WebSocketServer extends StatefulWidget {
   var bools;
@@ -102,8 +103,8 @@ class _WebSocketServerState extends State<WebSocketServer> {
                         Expanded(
                           child: Container(
                             height: 45,
-                            child: RaisedButton(
-                                color: Colors.blue,
+                            child:  ElevatedButton(
+                                style: ElevatedButton.styleFrom(primary:Colors.blue),
                                 child: Text("Refresh Ip",
                                     style: TextStyle(color: Colors.white)),
                                 onPressed: () {
@@ -251,7 +252,7 @@ class _WebSocketServerState extends State<WebSocketServer> {
     var clipboardData = ClipboardData(text: clip);
     print("=====>" + clip);
     Clipboard.setData(clipboardData);
-    key.currentState!.showSnackBar(SnackBar(content: Text("Copied")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied")));
   }
 
   Future<void> setIp() async {

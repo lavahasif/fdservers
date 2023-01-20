@@ -1,15 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/component/CrudButton.dart';
-import 'package:untitled1/component/FindDialog.dart';
-import 'package:untitled1/provider/CrudProvider.dart';
-import 'package:untitled1/provider/MedaProvider.dart';
-import 'package:untitled1/provider/RegProvider.dart';
-import 'package:untitled1/repository/Notes.dart';
-import 'package:untitled1/validator/validator.dart';
+// import 'package:untitled1/component/CrudButton.dart';
+// import 'package:untitled1/component/FindDialog.dart';
+// import 'package:untitled1/provider/CrudProvider.dart';
+// import 'package:untitled1/provider/MedaProvider.dart';
+// import 'package:untitled1/provider/RegProvider.dart';
+// import 'package:untitled1/repository/Notes.dart';
+// import 'package:untitled1/validator/validator.dart';
 
+import '../component/CrudButton.dart';
+import '../component/FindDialog.dart';
 import '../main.dart';
+import '../provider/CrudProvider.dart';
+import '../provider/MedaProvider.dart';
+import '../provider/RegProvider.dart';
+import '../repository/Notes.dart';
+import '../validator/validator.dart';
 
 // GlobalKey<FormState>? formKey;
 

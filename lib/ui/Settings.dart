@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled1/main.dart';
-import 'package:untitled1/util/Constants.dart';
+
+import '../main.dart';
+import '../util/Constants.dart';
+
 
 var _portController = TextEditingController(text: "8069");
 var _portController_socket = TextEditingController(text: "3000");
@@ -93,8 +95,8 @@ class Settings extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child:
                             Text("Save", style: TextStyle(color: Colors.white)),
                         onPressed: () {
@@ -131,7 +133,7 @@ class Settings extends StatelessWidget {
       mfav_ip = ip;
       mfav_timeout = timeout;
       mfav2_timeout = timeout2;
-      key.currentState!.showSnackBar(SnackBar(content: Text("Saved")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Saved")));
     }
   }
 }

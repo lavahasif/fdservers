@@ -1,17 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/component/CrudButton.dart';
-import 'package:untitled1/component/FindDialog.dart';
-import 'package:untitled1/provider/CrudProvider.dart';
-import 'package:untitled1/provider/MedaProvider.dart';
-import 'package:untitled1/provider/TutsProvider.dart';
-import 'package:untitled1/repository/Tuts.dart';
-import 'package:untitled1/util/webserver.dart';
-import 'package:untitled1/validator/validator.dart';
+
+// import 'package:untitled1/component/CrudButton.dart';
+// import 'package:untitled1/component/FindDialog.dart';
+// import 'package:untitled1/provider/CrudProvider.dart';
+// import 'package:untitled1/provider/MedaProvider.dart';
+// import 'package:untitled1/provider/TutsProvider.dart' as t;
+// import 'package:untitled1/repository/Tuts.dart' ;
+// import 'package:untitled1/util/webserver.dart';
+// import 'package:untitled1/validator/validator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../component/CrudButton.dart';
+import '../component/FindDialog.dart';
 import '../main.dart';
+import '../provider/CrudProvider.dart';
+import '../provider/MedaProvider.dart';
+import '../provider/TutsProvider.dart' as t;
+import '../repository/Tuts.dart';
+import '../util/webserver.dart';
+import '../validator/validator.dart';
 
 // GlobalKey<FormState>? formKey;
 
@@ -23,8 +32,8 @@ class RegRoute extends StatelessWidget {
     // var size = MediaQuery.of(context).size;
     // context.read<MediaProvider>().height = size.height;
     // context.read<MediaProvider>().width = size.width;
-    context.read<RegProvider>().getMaxCount().then((value) =>
-        {print("page$value"), context.read<RegProvider>().maxcount = value!});
+    context.read<t.RegProvider>().getMaxCount().then((value) =>
+        {print("page$value"), context.read<t.RegProvider>().maxcount = value!});
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +58,7 @@ class _NoteRegistrationState extends State<NoteRegistration> {
 
   @override
   Widget build(BuildContext context) {
-    link_controller.text=proces_txt;
+    link_controller.text = proces_txt;
     if (proces_txt.isNotEmpty && link_controller.text.isNotEmpty) {
       print("=======>true123");
       context.read<CrudProvider>().isChanged = true;
@@ -67,7 +76,7 @@ void ClearControl() {
 
 class StackWidget extends StatelessWidget {
   _deleteCallback(BuildContext context) {
-    context.read<RegProvider>().Delete(id_controller.text);
+    context.read<t.RegProvider>().Delete(id_controller.text);
 
     _reset(context);
   }
@@ -75,7 +84,7 @@ class StackWidget extends StatelessWidget {
   void setFeild(Tuts? value, BuildContext context) {
     // readbyValue.then((value) {
     print("sd" + value!.id.toString());
-    context.read<RegProvider>().maxcount = value.id!;
+    context.read<t.RegProvider>().maxcount = value.id!;
     // id_controller.text = value.id.toString();
 
     name_controller.text = value.name!;
@@ -97,13 +106,13 @@ class StackWidget extends StatelessWidget {
             okCallback: (value) {
               var values = value[1].toString();
               var i = int.parse(values);
-              context.read<RegProvider>().maxcount = i;
+              context.read<t.RegProvider>().maxcount = i;
               print("===>$i");
-              context.read<RegProvider>().ReadbyValue(values).then(
+              context.read<t.RegProvider>().ReadbyValue(values).then(
                 (value) {
                   if (value == null) ClearControl();
 
-                  context.read<RegProvider>().tuts = value;
+                  context.read<t.RegProvider>().tuts = value;
                   setFeild(value, context);
                 },
               );
@@ -158,7 +167,7 @@ class StackWidget extends StatelessWidget {
   _saveCallback(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       print("==========>sucsse");
-      context.read<RegProvider>().Create(Tuts(
+      context.read<t.RegProvider>().Create(Tuts(
           null,
           name_controller.text,
           note_controller.text,
@@ -176,7 +185,7 @@ class StackWidget extends StatelessWidget {
   _editCallback(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       print("==========>sucsse");
-      context.read<RegProvider>().Update(Tuts(
+      context.read<t.RegProvider>().Update(Tuts(
           int.parse(id_controller.text),
           name_controller.text,
           note_controller.text,
@@ -192,8 +201,8 @@ class StackWidget extends StatelessWidget {
   }
 
   void setMaxcount(BuildContext context) {
-    context.read<RegProvider>().getMaxCount().then((value) =>
-        {print(value), context.read<RegProvider>().maxcount = value!});
+    context.read<t.RegProvider>().getMaxCount().then((value) =>
+        {print(value), context.read<t.RegProvider>().maxcount = value!});
   }
 }
 
@@ -235,7 +244,7 @@ class _WidgetFormState extends State<WidgetForm> {
   String password = "";
 
   Widget WidgetForms() {
-    var string = context.watch<RegProvider>().maxcount.toString();
+    var string = context.watch<t.RegProvider>().maxcount.toString();
     print(string);
     id_controller.text = string;
     // if(_formKey!.currentState!.validate())
@@ -249,19 +258,19 @@ class _WidgetFormState extends State<WidgetForm> {
               Expanded(
                 flex: 3,
                 child: OutlinedButton(
-                    onPressed: !(context.read<RegProvider>().smallid)
+                    onPressed: !(context.read<t.RegProvider>().smallid)
                         ? () {
                             // print("<===>${id_controller.text}");
                             var i = int.parse(id_controller.text) - 1;
-                            context.read<RegProvider>().maxcount = i;
+                            context.read<t.RegProvider>().maxcount = i;
                             print("===>$i");
                             context
-                                .read<RegProvider>()
+                                .read<t.RegProvider>()
                                 .ReadbyValue((i).toString())
                                 .then((value) {
                               if (value == null) ClearControl();
 
-                              context.read<RegProvider>().tuts = value;
+                              context.read<t.RegProvider>().tuts = value;
                               setFeild(value);
                             });
                           }
@@ -290,17 +299,17 @@ class _WidgetFormState extends State<WidgetForm> {
               Expanded(
                 flex: 3,
                 child: OutlinedButton(
-                    onPressed: (context.read<RegProvider>().greatid)
+                    onPressed: (context.read<t.RegProvider>().greatid)
                         ? () {
                             var i = int.parse(id_controller.text) + 1;
-                            context.read<RegProvider>().maxcount = i;
+                            context.read<t.RegProvider>().maxcount = i;
                             print("===>$i");
                             context
-                                .read<RegProvider>()
+                                .read<t.RegProvider>()
                                 .ReadbyValue((i).toString())
                                 .then((value) {
                               if (value == null) ClearControl();
-                              context.read<RegProvider>().tuts = value;
+                              context.read<t.RegProvider>().tuts = value;
                               setFeild(value);
                             });
                           }
@@ -404,7 +413,7 @@ class _WidgetFormState extends State<WidgetForm> {
   void setFeild(Tuts? value) {
     // readbyValue.then((value) {
     print("sd" + value!.id.toString());
-    context.read<RegProvider>().maxcount = value.id!;
+    context.read<t.RegProvider>().maxcount = value.id!;
     // id_controller.text = value.id.toString();
 
     name_controller.text = value.name!;

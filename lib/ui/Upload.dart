@@ -6,10 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/main.dart';
-import 'package:untitled1/provider/UploadProvider.dart';
-import 'package:untitled1/service/Service.dart';
-import 'package:untitled1/util/webserver.dart';
+
+
+import '../main.dart';
+import '../provider/UploadProvider.dart';
+import '../service/Service.dart';
+import '../util/webserver.dart';
+
 
 class Upload extends StatefulWidget {
   const Upload({Key? key}) : super(key: key);
@@ -82,8 +85,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Show Device",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () => setLisIp()),
@@ -93,8 +96,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child: Text("Show Files",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -111,8 +114,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Show File Cache",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () => ShowFiles_fil()),
@@ -122,8 +125,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child: Text("Show Files Root",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -140,8 +143,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Upload",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () {
@@ -153,8 +156,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child:
                           Text("Clear", style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -171,8 +174,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Message",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () {
@@ -189,8 +192,8 @@ class _UploadState extends State<Upload> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child:
                             Text("Move", style: TextStyle(color: Colors.white)),
                         onPressed: () async {

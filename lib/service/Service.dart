@@ -44,9 +44,9 @@ class ShareService {
   }
 
   Future<void> setRefresh() async {
-    return await MethodChannel('com.tnorbury.flutterSharingTutorial')
+    return await MethodChannel('com.tnorb                ury.flutterSharingTutorial')
         .invokeMethod("delete");
-  }
+  }  
 
   Future<void> openWhats(mob, message, type) async {
     return await MethodChannel('com.tnorbury.flutterSharingTutorial')

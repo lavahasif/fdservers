@@ -3,12 +3,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled1/component/ListNumber.dart';
-import 'package:untitled1/main.dart';
-import 'package:untitled1/provider/WhatsAppprovider.dart';
-import 'package:untitled1/service/Service.dart';
-import 'package:untitled1/util/Constants.dart';
+// import 'package:untitled1/component/ListNumber.dart';
+// import 'package:untitled1/main.dart';
+// import 'package:untitled1/provider/WhatsAppprovider.dart';
+// import 'package:untitled1/service/Service.dart';
+// import 'package:untitled1/util/Constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../component/ListNumber.dart';
+import '../main.dart';
+import '../provider/WhatsAppprovider.dart';
+import '../service/Service.dart';
+import '../util/Constants.dart';
 
 class WhatsAppopen extends StatelessWidget {
   WhatsAppopen({Key? key}) : super(key: key);
@@ -166,8 +172,8 @@ class WhatsAppopen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       height: 63,
-                      child: RaisedButton(
-                          color: Colors.blue,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary:Colors.blue),
                           child: Text("Buisness",
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
@@ -179,8 +185,8 @@ class WhatsAppopen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.only(left: 10),
                       height: 63,
-                      child: RaisedButton(
-                          color: Colors.blue,
+                      child:  ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary:Colors.blue),
                           child: Text("Open Whatsapp",
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
@@ -199,8 +205,8 @@ class WhatsAppopen extends StatelessWidget {
                     child: Container(
                       child: Container(
                         height: 63,
-                        child: RaisedButton(
-                            color: Colors.blue,
+                        child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                             child: Text("Open All",
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
@@ -214,8 +220,8 @@ class WhatsAppopen extends StatelessWidget {
                       padding: EdgeInsets.only(left: 10),
                       child: Container(
                         height: 63,
-                        child: RaisedButton(
-                            color: Colors.blue,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                             child: Text("Open All2",
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
@@ -246,7 +252,7 @@ class WhatsAppopen extends StatelessWidget {
     if (text.isNotEmpty) {
       print(Constants.Sdk);
       print(Constants.Sdk);
-      var message = context.watch<WhatsAppprovider>().whatsappmessage;
+      var message = context.read<WhatsAppprovider>().whatsappmessage;
       if (Constants.Sdk >= 19 && Constants.Sdk <= 28) {
         print(type);
         if (type == 'z') {

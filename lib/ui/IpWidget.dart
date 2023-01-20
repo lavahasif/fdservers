@@ -7,12 +7,15 @@ import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled1/component/FindDialog.dart';
-import 'package:untitled1/provider/MyProvider.dart';
-import 'package:untitled1/ui/Whatsappopen.dart';
 
+// import 'package:untitled1/provider/MyProvider.dart';
+// import 'package:untitled1/ui/Whatsappopen.dart';
+
+import '../component/FindDialog.dart';
 import '../main.dart';
+import '../provider/MyProvider.dart';
 import 'TutsRegistration.dart';
+import 'Whatsappopen.dart';
 
 Isolate? geek;
 
@@ -177,8 +180,8 @@ class _IpWidgetState extends State<IpWidget> {
             ),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_IpAddress_Wifi)),
             )
@@ -193,8 +196,8 @@ class _IpWidgetState extends State<IpWidget> {
             ),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child:  ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_IpWT)),
             )
@@ -209,8 +212,8 @@ class _IpWidgetState extends State<IpWidget> {
             ),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_rootWoT)),
             )
@@ -232,8 +235,8 @@ class _IpWidgetState extends State<IpWidget> {
             ),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_IpAddress_Cellular1)),
             )
@@ -256,8 +259,8 @@ class _IpWidgetState extends State<IpWidget> {
             ),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_IpAddress_USB_tether)),
             )
@@ -278,8 +281,8 @@ class _IpWidgetState extends State<IpWidget> {
                 child: Text('Bluetooth_tether on: $_IpAddress_Blue_ther\n')),
             Expanded(
               flex: 2,
-              child: RaisedButton(
-                  color: Colors.blue,
+              child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                   child: copyWidget(),
                   onPressed: () => _copy(_IpAddress_Blue_ther)),
             )
@@ -294,8 +297,8 @@ class _IpWidgetState extends State<IpWidget> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Show Device",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () => setLisIp()),
@@ -305,8 +308,8 @@ class _IpWidgetState extends State<IpWidget> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child: Text("Share Me",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -323,8 +326,8 @@ class _IpWidgetState extends State<IpWidget> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                        color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                         child: Text("Show Port",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () => ShowAlertDialog_port(context)),
@@ -334,8 +337,8 @@ class _IpWidgetState extends State<IpWidget> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child: Text("Ping Ip",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -352,8 +355,8 @@ class _IpWidgetState extends State<IpWidget> {
                 Expanded(
                   child: Container(
                     height: 63,
-                    child: RaisedButton(
-                      color: Colors.blue,
+                    child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                       child: Text("IP Scan",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
@@ -372,8 +375,8 @@ class _IpWidgetState extends State<IpWidget> {
             Expanded(
               child: Container(
                 height: 63,
-                child: RaisedButton(
-                    color: Colors.blue,
+                child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                     child: Text("Tuts Regis",
                         style: TextStyle(color: Colors.white)),
                     onPressed: () => Navigator.push(context,
@@ -384,8 +387,8 @@ class _IpWidgetState extends State<IpWidget> {
             Expanded(
               child: Container(
                 height: 63,
-                child: RaisedButton(
-                    color: Colors.blue,
+                child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary:Colors.blue),
                     child:
                         Text("WhatsApp", style: TextStyle(color: Colors.white)),
                     onPressed: () => Navigator.push(
@@ -771,7 +774,7 @@ class _IpWidgetState extends State<IpWidget> {
     var clipboardData = ClipboardData(text: ipAddress_Wifi);
 
     Clipboard.setData(clipboardData);
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Copied")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied")));
   }
 
   void start_geek_process() async {

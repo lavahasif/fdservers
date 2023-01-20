@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/src/provider.dart';
-import 'package:untitled1/provider/CrudProvider.dart';
+
+import '../provider/CrudProvider.dart';
+
 
 typedef CrudCallback = Function(BuildContext);
 
