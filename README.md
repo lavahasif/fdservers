@@ -1,14 +1,22 @@
 # Fdserver (Android Only interop used)
-#HOst WEBSITE ON MOBILE Flutter
+#HOST WEBSITE ON MOBILE Flutter
 
 #Port Scanning
+
 #whatsapp number Search
+
 #note saver
+
 #socket io.
-#signalr ,
+
+#signalr 
+
 #share apk
+
 #upload file to specifice port
+
 and more..
+
 
 
 ![WhatsApp Image 2023-01-25 at 13 34 37](https://user-images.githubusercontent.com/22430922/214510679-0e2762fb-0128-4327-9d1e-ed4776b46c65.jpg)
